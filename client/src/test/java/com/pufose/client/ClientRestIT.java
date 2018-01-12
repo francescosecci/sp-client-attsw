@@ -50,7 +50,6 @@ public class ClientRestIT {
 		              .withBody(body)));
 	}
 	
-	
 	@Test
 	public void testGetPathOK() throws IOException, ProtocolException {
 		String expected="[(A),(B)]";
