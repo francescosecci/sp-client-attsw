@@ -1,12 +1,9 @@
 package com.pufose.client;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-
 public class Client implements IClient {
 	private IRestServiceClient restclient;
 	private Gson gson;
