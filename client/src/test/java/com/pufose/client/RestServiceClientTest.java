@@ -8,7 +8,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
-import org.apache.http.ProtocolException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,13 +43,13 @@ public class RestServiceClientTest {
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testDoGetWhenWrongRequest() throws IOException, ProtocolException {
+	public void testDoGetWhenWrongRequest() throws IOException {
 		fixture.doGet(-1, null);
 		
 	}
 	
 	@Test
-	public void testDoGetRequestAllOKEmptyList() throws IOException, ProtocolException {
+	public void testDoGetRequestAllOKEmptyList() throws IOException {
 		stubResponse("/api/","[]",200);
 		String response=fixture.doGet(1, null);
 		assertEquals(200,fixture.getLastResponse());
@@ -58,7 +57,7 @@ public class RestServiceClientTest {
 	}
 	
 	@Test
-	public void testDoGetRequestAllOKSingleElementList() throws IOException, ProtocolException {
+	public void testDoGetRequestAllOKSingleElementList() throws IOException {
 		stubResponse("/api/","[1]",200);
 		String response=fixture.doGet(1, null);
 		assertEquals(200,fixture.getLastResponse());
@@ -66,7 +65,7 @@ public class RestServiceClientTest {
 	}
 	
 	@Test
-	public void testDoGetRequestAllOKRegularList() throws IOException, ProtocolException {
+	public void testDoGetRequestAllOKRegularList() throws IOException {
 		stubResponse("/api/","[1,2,3,4,5]",200);
 		String response=fixture.doGet(1, null);
 		assertEquals(200,fixture.getLastResponse());
@@ -74,19 +73,19 @@ public class RestServiceClientTest {
 	}
 	
 	@Test(expected=IOException.class)
-	public void testDoGetRequestAllWrongWhenServerBecameUnreachable() throws IOException, ProtocolException {
+	public void testDoGetRequestAllWrongWhenServerBecameUnreachable() throws IOException {
 		mockedServer.stop();
 		fixture.doGet(1, null);
 	}
 	
 	@Test(expected=IOException.class)
-	public void testDoGetRequestAllWrongWhenServerCannotPerformOperation() throws IOException, ProtocolException {
+	public void testDoGetRequestAllWrongWhenServerCannotPerformOperation() throws IOException {
 		stubResponse("/api/","An error",500);
 		fixture.doGet(1, null);
 	}
 	
 	@Test
-	public void testDoGetRequestAGridOK() throws IOException, ProtocolException {
+	public void testDoGetRequestAGridOK() throws IOException {
 		String jsongrid="{\"n\":5,\"matrix\":[[1,0,1,1,0],[1,1,1,1,1],[1,1,1,0,1],[1,0,1,1,0],[1,1,1,1,1]],\"id\":1}";
 		stubResponse("/api/grid1",jsongrid,200);
 		String received=fixture.doGet(2,"1");
@@ -95,44 +94,44 @@ public class RestServiceClientTest {
 	}
 	
 	@Test(expected=IOException.class)
-	public void testDoGetRequestAGridWrongWhenServerBecameUnreachable() throws IOException, ProtocolException {
+	public void testDoGetRequestAGridWrongWhenServerBecameUnreachable() throws IOException {
 		mockedServer.stop();
 		fixture.doGet(2,"1");
 	}
 	
 	@Test(expected=IOException.class)
-	public void testDoGetRequestGridWrongWhenServerCannotPerformOperation() throws IOException, ProtocolException {
+	public void testDoGetRequestGridWrongWhenServerCannotPerformOperation() throws IOException {
 		stubResponse("/api/grid2","Error",500);
 		fixture.doGet(2, "2");
 	}
 	@Test
-	public void testDoGetRequestPathOK() throws IOException, ProtocolException {
+	public void testDoGetRequestPathOK() throws IOException {
 		String expected="[(A),(B)]";
 		stubResponse("/api/pathATOBINgrid2",expected,200);
 		fixture.doGet(3,"ATOBINgrid2");
 		
 	}
 	@Test(expected=IOException.class)
-	public void testDoGetRequestPathWrongWhenServerBecameUnreachable() throws IOException, ProtocolException {
+	public void testDoGetRequestPathWrongWhenServerBecameUnreachable() throws IOException {
 		mockedServer.stop();
 		fixture.doGet(3,"ATOBINgrid2");
 		
 	}
 	@Test(expected=IOException.class)
-	public void testDoGetRequestPathWrongWhenServerCannotPerformOperation() throws IOException, ProtocolException {
+	public void testDoGetRequestPathWrongWhenServerCannotPerformOperation() throws IOException {
 		stubResponse("/api/pathATOBINgrid2","Error",500);
 		fixture.doGet(3,"ATOBINgrid2");
 		
 	}
 	@Test
-	public void testDoGetRequestPathOkWhenServerReturnsAnEmptyList() throws IOException, ProtocolException {
+	public void testDoGetRequestPathOkWhenServerReturnsAnEmptyList() throws IOException {
 		stubResponse("/api/pathATOBINgrid2","[]",200);
 		String received=fixture.doGet(3,"ATOBINgrid2");
 		assertEquals(200,fixture.getLastResponse());
 		assertEquals("[]",received);
 	}
 	@Test
-	public void testDoGetRequestPathOkWhenServerReturnsAnSingleElementList() throws IOException, ProtocolException {
+	public void testDoGetRequestPathOkWhenServerReturnsAnSingleElementList() throws IOException {
 		stubResponse("/api/pathATOBINgrid2","[1]",200);
 		String received=fixture.doGet(3,"ATOBINgrid2");
 		assertEquals(200,fixture.getLastResponse());

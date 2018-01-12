@@ -63,14 +63,14 @@ public class ClientRestIT {
 	
 	}
 	@Test(expected=IOException.class)
-	public void testGetPathFailWhenServerUnreacheable() throws IOException, ProtocolException {
+	public void testGetPathFailWhenServerUnreacheable() throws IOException {
 
 		mockedServer.stop();
 		client.getShortestPath("","","");
 	
 	}
 	@Test(expected=JsonSyntaxException.class)
-	public void testGetPathFailWhenServerCannotSendObjectToClient() throws IOException, ProtocolException {
+	public void testGetPathFailWhenServerCannotSendObjectToClient() throws IOException {
 		stubResponse("/api/pathATOBINgrid2","not json",500);
 		List<String> path=client.getShortestPath("A","B","grid2");
 		assertNull(path);
@@ -78,35 +78,35 @@ public class ClientRestIT {
 	}
 	
 	@Test
-	public void testGetAllTablesOK() throws IOException, ProtocolException {
+	public void testGetAllTablesOK() throws IOException {
 		stubResponse("/api/","[\"1\",\"2\",\"3\"]",200);
 		List<String> tables=client.getAllTables();
 		assertEquals(200,rsc.getLastResponse());
 		assertEquals(Arrays.asList("1","2","3"),tables);
 	}
 	@Test
-	public void testGetAllTablesOKWhenEmptyList() throws IOException, ProtocolException {
+	public void testGetAllTablesOKWhenEmptyList() throws IOException {
 		stubResponse("/api/","[]",200);
 		List<String> tables=client.getAllTables();
 		assertEquals(200,rsc.getLastResponse());
 		assertEquals(Arrays.asList(),tables);
 	}
 	@Test
-	public void testGetAllTablesOKWhenSingleElementList() throws IOException, ProtocolException {
+	public void testGetAllTablesOKWhenSingleElementList() throws IOException {
 		stubResponse("/api/","[\"1\"]",200);
 		List<String> tables=client.getAllTables();
 		assertEquals(200,rsc.getLastResponse());
 		assertEquals(Arrays.asList("1"),tables);
 	}
 	@Test(expected=IOException.class)
-	public void testGetAllTablesFailServerUnreacheable() throws IOException, ProtocolException {
+	public void testGetAllTablesFailServerUnreacheable() throws IOException {
 		mockedServer.stop();
 		client.getAllTables();
 		
 	}
 	
 	@Test(expected=JsonSyntaxException.class)
-	public void testGetAllTablesFailServerCannotSendObjectToClient() throws IOException, ProtocolException {
+	public void testGetAllTablesFailServerCannotSendObjectToClient() throws IOException {
 		stubResponse("/api/","Not json",500);
 		client.getAllTables();
 		
@@ -129,14 +129,14 @@ public class ClientRestIT {
 	}
 	
 	@Test(expected=IOException.class)
-	public void testGetATableFailServerUnreacheable() throws IOException, ProtocolException {
+	public void testGetATableFailServerUnreacheable() throws IOException {
 		mockedServer.stop();
 		client.retrieveGrid("0");
 	
 	}
 	
 	@Test(expected=JsonSyntaxException.class)
-	public void testGetATableFailServerCannotSendObjectToClient() throws IOException, ProtocolException {
+	public void testGetATableFailServerCannotSendObjectToClient() throws IOException {
 		stubResponse("/api/grid0","not json",500);
 		client.retrieveGrid("0");
 		

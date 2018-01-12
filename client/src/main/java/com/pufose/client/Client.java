@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.ProtocolException;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -23,7 +21,7 @@ public class Client implements IClient {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> getAllTables() throws IOException, ProtocolException {
+	public List<String> getAllTables() throws IOException {
 		try {
 			String rcv = (restclient.doGet(1, null));
 			return (List<String>) (gson.fromJson(rcv, List.class));
@@ -41,7 +39,7 @@ public class Client implements IClient {
 		}
 	}
 
-	public GridFromServer retrieveGrid(String name) throws IOException, ProtocolException {
+	public GridFromServer retrieveGrid(String name) throws IOException {
 		try {
 			return gson.fromJson(restclient.doGet(2, name), GridFromServer.class);
 			
@@ -53,7 +51,7 @@ public class Client implements IClient {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> getShortestPath(String fromName, String toName, String where) throws IOException, ProtocolException  {
+	public List<String> getShortestPath(String fromName, String toName, String where) throws IOException  {
 		try {
 			String rcv=(restclient.doGet(3, fromName+"TO"+toName+"IN"+where));
 			return (List<String>)(gson.fromJson(rcv, List.class));

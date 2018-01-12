@@ -31,7 +31,7 @@ public class ClientTest {
 	}
 	
 	@Test(expected=NullPointerException.class)
-	public void testGetAllGridsWhenNoServiceProvided() throws  IOException, ProtocolException {
+	public void testGetAllGridsWhenNoServiceProvided() throws  IOException {
 		client.setRestServiceClient(null);
 		client.getAllTables();
 	}
@@ -43,34 +43,34 @@ public class ClientTest {
 		assertEquals(Arrays.asList("1","2","3"),tables);
 	}
 	@Test
-	public void testGetAllTablesOKWhenEmptyList() throws IOException, ProtocolException {
+	public void testGetAllTablesOKWhenEmptyList() throws IOException {
 		Mockito.doReturn(new Gson().toJson(Arrays.asList())).when(service).doGet(REQUEST_ALL, null);
 		List<String> tables=client.getAllTables();
 		verify(service,times(1)).doGet(REQUEST_ALL, null);
 		assertEquals(Arrays.asList(),tables);
 	}
 	@Test
-	public void testGetAllTablesOKWhenSingleElementList() throws IOException, ProtocolException {
+	public void testGetAllTablesOKWhenSingleElementList() throws IOException {
 		Mockito.doReturn(new Gson().toJson(Arrays.asList("1"))).when(service).doGet(REQUEST_ALL, null);
 		List<String> tables=client.getAllTables();
 		verify(service,times(1)).doGet(REQUEST_ALL, null);
 		assertEquals(Arrays.asList("1"),tables);
 	}
 	@Test(expected=IOException.class)
-	public void testGetAllTablesFailServerUnreacheable() throws IOException, ProtocolException {
+	public void testGetAllTablesFailServerUnreacheable() throws IOException {
 		Mockito.doThrow(new IOException()).when(service).doGet(REQUEST_ALL, null);
 		client.getAllTables();
 	}
 	
 	@Test(expected=JsonSyntaxException.class)
-	public void testGetAllTablesFailServerCannotSendObjectToClient() throws IOException,  ProtocolException {
+	public void testGetAllTablesFailServerCannotSendObjectToClient() throws IOException {
 		when(service.doGet(REQUEST_ALL, null)).thenThrow(new IOException());
 		when(service.getLastResponse()).thenReturn(500);
 		client.getAllTables();
 
 	}
 	@Test
-	public void testGetATableOK() throws IOException, ProtocolException {
+	public void testGetATableOK() throws IOException {
 		int[][] matrix = new int[][] {
 			{1,0},
 			{0,1}
@@ -84,14 +84,14 @@ public class ClientTest {
 	}
 	
 	@Test(expected=IOException.class)
-	public void testGetATableFailServerUnreacheable() throws IOException, ProtocolException {
+	public void testGetATableFailServerUnreacheable() throws IOException {
 		Mockito.doThrow(new IOException()).when(service).doGet(REQUEST_GRID, "0");
 		client.retrieveGrid("0");
 		
 	}
 	
 	@Test(expected=JsonSyntaxException.class)
-	public void testGetATableFailServerCannotSendObjectToClient() throws IOException, ProtocolException {
+	public void testGetATableFailServerCannotSendObjectToClient() throws IOException {
 		when(service.doGet(REQUEST_GRID, "0")).thenThrow(new IOException());
 		when(service.getLastResponse()).thenReturn(500);
 		client.retrieveGrid("0");
@@ -107,7 +107,7 @@ public class ClientTest {
 	
 	}
 	@Test(expected=IOException.class)
-	public void testGetPathFailWhenServerUnreacheable() throws  IOException, ProtocolException {
+	public void testGetPathFailWhenServerUnreacheable() throws  IOException {
 		String fromName="node1";
 		String toName="node2";
 		String in="grid";
@@ -117,7 +117,7 @@ public class ClientTest {
 		
 	}
 	@Test(expected=JsonSyntaxException.class)
-	public void testGetPathFailWhenServerCannotSendObjectToClient() throws  IOException, ProtocolException {
+	public void testGetPathFailWhenServerCannotSendObjectToClient() throws  IOException {
 		String fromName="node1";
 		String toName="node2";
 		String in="grid";

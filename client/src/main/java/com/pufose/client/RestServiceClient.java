@@ -4,10 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-
-import org.apache.http.ProtocolException;
 
 public class RestServiceClient implements IRestServiceClient {
 
@@ -22,7 +19,7 @@ public class RestServiceClient implements IRestServiceClient {
 		this.resp=0;
 	}
 
-	public String doGet(int request, String args) throws IOException, ProtocolException {
+	public String doGet(int request, String args) throws IOException {
 		switch (request) {
 		case 1: {
 			return manageAll();
@@ -39,15 +36,12 @@ public class RestServiceClient implements IRestServiceClient {
 		}
 	}
 
-	private String manageAll() throws ProtocolException, IOException {
+	private String manageAll() throws IOException  {
 		return manage(urlToAll, "");
 	}
 
-	private String manage(String url, String args) throws IOException, ProtocolException {
-		HttpURLConnection conn = getConnection(url + args);
-		if (conn != null)
-			return read(conn);
-		return null;
+	private String manage(String url, String args) throws IOException  {
+		return read(getConnection(url + args));
 
 	}
 	private String read(HttpURLConnection conn) throws IOException {
@@ -62,15 +56,16 @@ public class RestServiceClient implements IRestServiceClient {
 		return sb.toString();
 	}
 	
-	private HttpURLConnection getConnection(String url) throws IOException, ProtocolException {
-		HttpURLConnection connection = createConnection(url);
+	private HttpURLConnection getConnection(String url) throws IOException {
+		HttpURLConnection connection;
+		connection = createConnection(url);
 		this.resp = connection.getResponseCode();
 		return connection;
+		
 	}
-	private HttpURLConnection createConnection(String url)
-			throws MalformedURLException, IOException, ProtocolException {
-		URL _url = new URL(url);
-	    HttpURLConnection connection = (HttpURLConnection)_url.openConnection();
+	private HttpURLConnection createConnection(String url) throws IOException {
+		URL uurl = new URL(url);
+	    HttpURLConnection connection = (HttpURLConnection)uurl.openConnection();
 	    connection.setRequestMethod("GET");
 		return connection;
 	}
