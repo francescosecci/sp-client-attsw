@@ -19,7 +19,7 @@ import org.junit.Test;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.google.gson.JsonSyntaxException;
+
 
 
 
@@ -69,7 +69,7 @@ public class ClientRestIT {
 		client.getShortestPath("","","");
 	
 	}
-	@Test(expected=JsonSyntaxException.class)
+	@Test(expected=IOException.class)
 	public void testGetPathFailWhenServerCannotSendObjectToClient() throws IOException {
 		stubResponse("/api/pathATOBINgrid2","not json",500);
 		List<String> path=client.getShortestPath("A","B","grid2");
@@ -105,7 +105,7 @@ public class ClientRestIT {
 		
 	}
 	
-	@Test(expected=JsonSyntaxException.class)
+	@Test(expected=IOException.class)
 	public void testGetAllTablesFailServerCannotSendObjectToClient() throws IOException {
 		stubResponse("/api/","Not json",500);
 		client.getAllTables();
@@ -135,7 +135,7 @@ public class ClientRestIT {
 	
 	}
 	
-	@Test(expected=JsonSyntaxException.class)
+	@Test(expected=IOException.class)
 	public void testGetATableFailServerCannotSendObjectToClient() throws IOException {
 		stubResponse("/api/grid0","not json",500);
 		client.retrieveGrid("0");

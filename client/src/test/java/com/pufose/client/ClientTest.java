@@ -15,7 +15,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 
 public class ClientTest {
 	private Client client;
@@ -36,7 +35,7 @@ public class ClientTest {
 		client.getAllTables();
 	}
 	@Test
-	public void testGetAllTablesOK() throws IOException, ProtocolException {
+	public void testGetAllTablesOK() throws IOException {
 		Mockito.doReturn(new Gson().toJson(Arrays.asList("1","2","3"))).when(service).doGet(REQUEST_ALL, null);
 		List<String> tables=client.getAllTables();
 		verify(service,times(1)).doGet(REQUEST_ALL, null);
@@ -62,10 +61,9 @@ public class ClientTest {
 		client.getAllTables();
 	}
 	
-	@Test(expected=JsonSyntaxException.class)
+	@Test(expected=IOException.class)
 	public void testGetAllTablesFailServerCannotSendObjectToClient() throws IOException {
 		when(service.doGet(REQUEST_ALL, null)).thenThrow(new IOException());
-		when(service.getLastResponse()).thenReturn(500);
 		client.getAllTables();
 
 	}
@@ -90,10 +88,9 @@ public class ClientTest {
 		
 	}
 	
-	@Test(expected=JsonSyntaxException.class)
+	@Test(expected=IOException.class)
 	public void testGetATableFailServerCannotSendObjectToClient() throws IOException {
 		when(service.doGet(REQUEST_GRID, "0")).thenThrow(new IOException());
-		when(service.getLastResponse()).thenReturn(500);
 		client.retrieveGrid("0");
 	}
 	@Test
@@ -116,13 +113,12 @@ public class ClientTest {
 		
 		
 	}
-	@Test(expected=JsonSyntaxException.class)
+	@Test(expected=IOException.class)
 	public void testGetPathFailWhenServerCannotSendObjectToClient() throws  IOException {
 		String fromName="node1";
 		String toName="node2";
 		String in="grid";
 		when(service.doGet(REQUEST_PATH, fromName+"TO"+toName+"IN"+in)).thenThrow(new IOException());
-		when(service.getLastResponse()).thenReturn(500);
 		client.getShortestPath(fromName, toName, in);
 		
 	}
