@@ -3,11 +3,11 @@ package com.pufose.client;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -32,6 +32,17 @@ public class ClientTest {
 		client.setRestServiceClient(null);
 		client.getAllTables();
 	}
+	@Test(expected=NullPointerException.class)
+	public void testGetPathWhenNoServiceProvided() throws  IOException {
+		client.setRestServiceClient(null);
+		client.getShortestPath("","","");
+	}
+	@Test(expected=NullPointerException.class)
+	public void testGetOneGridWhenNoServiceProvided() throws  IOException {
+		client.setRestServiceClient(null);
+		client.retrieveGrid("");
+	}
+	
 	@Test
 	public void testGetAllTablesOK() throws IOException {
 		Mockito.doReturn(new Gson().toJson(Arrays.asList("1","2","3"))).when(service).doGet(REQUEST_ALL, null);
@@ -54,17 +65,12 @@ public class ClientTest {
 		assertEquals(Arrays.asList("1"),tables);
 	}
 	@Test(expected=IOException.class)
-	public void testGetAllTablesFailServerUnreacheable() throws IOException {
+	public void testGetAllTablesFail() throws IOException {
 		Mockito.doThrow(new IOException()).when(service).doGet(REQUEST_ALL, null);
 		client.getAllTables();
 	}
 	
-	@Test(expected=IOException.class)
-	public void testGetAllTablesFailServerCannotSendObjectToClient() throws IOException {
-		when(service.doGet(REQUEST_ALL, null)).thenThrow(new IOException());
-		client.getAllTables();
 
-	}
 	@Test
 	public void testGetATableOK() throws IOException {
 		int[][] matrix = new int[][] {
@@ -80,17 +86,12 @@ public class ClientTest {
 	}
 	
 	@Test(expected=IOException.class)
-	public void testGetATableFailServerUnreacheable() throws IOException {
+	public void testGetATableFail() throws IOException {
 		Mockito.doThrow(new IOException()).when(service).doGet(REQUEST_GRID, "0");
 		client.retrieveGrid("0");
 		
 	}
 	
-	@Test(expected=IOException.class)
-	public void testGetATableFailServerCannotSendObjectToClient() throws IOException {
-		when(service.doGet(REQUEST_GRID, "0")).thenThrow(new IOException());
-		client.retrieveGrid("0");
-	}
 	@Test
 	public void testGetPathOK() throws IOException {
 		String fromName="node1";
@@ -102,7 +103,7 @@ public class ClientTest {
 	
 	}
 	@Test(expected=IOException.class)
-	public void testGetPathFailWhenServerUnreacheable() throws  IOException {
+	public void testGetPathFail() throws  IOException {
 		String fromName="node1";
 		String toName="node2";
 		String in="grid";
@@ -111,15 +112,7 @@ public class ClientTest {
 		
 		
 	}
-	@Test(expected=IOException.class)
-	public void testGetPathFailWhenServerCannotSendObjectToClient() throws  IOException {
-		String fromName="node1";
-		String toName="node2";
-		String in="grid";
-		when(service.doGet(REQUEST_PATH, fromName+"TO"+toName+"IN"+in)).thenThrow(new IOException());
-		client.getShortestPath(fromName, toName, in);
-		
-	}
+
 	
 	
 	

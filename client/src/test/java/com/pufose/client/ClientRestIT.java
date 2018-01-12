@@ -5,7 +5,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -72,9 +71,7 @@ public class ClientRestIT {
 	@Test(expected=IOException.class)
 	public void testGetPathFailWhenServerCannotSendObjectToClient() throws IOException {
 		stubResponse("/api/pathATOBINgrid2","not json",500);
-		List<String> path=client.getShortestPath("A","B","grid2");
-		assertNull(path);
-		assertEquals(500,rsc.getLastResponse());
+		client.getShortestPath("A","B","grid2");
 	}
 	
 	@Test
@@ -112,7 +109,7 @@ public class ClientRestIT {
 		
 	}
 	@Test
-	public void testGetATableOK() throws IOException, ProtocolException {
+	public void testGetATableOK() throws IOException {
 		String jsongrid="{\"n\":5,\"matrix\":[[1,0,1,1,0],[1,1,1,1,1],[1,1,1,0,1],[1,0,1,1,0],[1,1,1,1,1]],\"id\":1}";
 		stubResponse("/api/grid1",jsongrid,200);
 		int[][] matrix = new int[][] {
