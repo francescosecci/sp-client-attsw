@@ -32,7 +32,7 @@ public class RestServiceClient implements IRestServiceClient {
 			return manage(urlToGrid,args);
 		}
 		case 3: {
-			return null;
+			return manage(urlToPath,args);
 		}
 		default: {
 			throw new IllegalArgumentException("");

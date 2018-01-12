@@ -1,6 +1,12 @@
 package com.pufose.client;
 
-import static org.junit.Assert.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
 
 import org.apache.http.ProtocolException;
 import org.junit.After;
@@ -10,14 +16,6 @@ import org.junit.Test;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static org.junit.Assert.assertEquals;
-
-
-import java.io.IOException;
 public class RestServiceClientTest {
 
 	private RestServiceClient fixture;
@@ -106,6 +104,39 @@ public class RestServiceClientTest {
 	public void testDoGetRequestGridWrongWhenServerCannotPerformOperation() throws IOException, ProtocolException {
 		stubResponse("/api/grid2","Error",500);
 		fixture.doGet(2, "2");
+	}
+	@Test
+	public void testDoGetRequestPathOK() throws IOException, ProtocolException {
+		String expected="[(A),(B)]";
+		stubResponse("/api/pathATOBINgrid2",expected,200);
+		fixture.doGet(3,"ATOBINgrid2");
+		
+	}
+	@Test(expected=IOException.class)
+	public void testDoGetRequestPathWrongWhenServerBecameUnreachable() throws IOException, ProtocolException {
+		mockedServer.stop();
+		fixture.doGet(3,"ATOBINgrid2");
+		
+	}
+	@Test(expected=IOException.class)
+	public void testDoGetRequestPathWrongWhenServerCannotPerformOperation() throws IOException, ProtocolException {
+		stubResponse("/api/pathATOBINgrid2","Error",500);
+		fixture.doGet(3,"ATOBINgrid2");
+		
+	}
+	@Test
+	public void testDoGetRequestPathOkWhenServerReturnsAnEmptyList() throws IOException, ProtocolException {
+		stubResponse("/api/pathATOBINgrid2","[]",200);
+		String received=fixture.doGet(3,"ATOBINgrid2");
+		assertEquals(200,fixture.getLastResponse());
+		assertEquals("[]",received);
+	}
+	@Test
+	public void testDoGetRequestPathOkWhenServerReturnsAnSingleElementList() throws IOException, ProtocolException {
+		stubResponse("/api/pathATOBINgrid2","[1]",200);
+		String received=fixture.doGet(3,"ATOBINgrid2");
+		assertEquals(200,fixture.getLastResponse());
+		assertEquals("[1]",received);
 	}
 
 }
