@@ -20,19 +20,17 @@ public class RestServiceClient implements IRestServiceClient {
 	}
 
 	public String doGet(int request, String args) throws IOException {
-		switch (request) {
-		case 1: {
+		if(request==1) {
 			return manageAll();
 		}
-		case 2: {
+		else if(request==2) {
 			return manage(urlToGrid,args);
 		}
-		case 3: {
+		else if(request==3) {
 			return manage(urlToPath,args);
 		}
-		default: {
+		else {
 			throw new IllegalArgumentException("");
-		}
 		}
 	}
 
