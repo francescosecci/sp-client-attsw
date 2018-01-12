@@ -73,20 +73,39 @@ public class RestServiceClientTest {
 		String response=fixture.doGet(1, null);
 		assertEquals(200,fixture.getLastResponse());
 		assertEquals("[1,2,3,4,5]",response);
-		
 	}
 	
 	@Test(expected=IOException.class)
 	public void testDoGetRequestAllWrongWhenServerBecameUnreachable() throws IOException, ProtocolException {
 		mockedServer.stop();
 		fixture.doGet(1, null);
-		
 	}
 	
 	@Test(expected=IOException.class)
 	public void testDoGetRequestAllWrongWhenServerCannotPerformOperation() throws IOException, ProtocolException {
 		stubResponse("/api/","An error",500);
 		fixture.doGet(1, null);
+	}
+	
+	@Test
+	public void testDoGetRequestAGridOK() throws IOException, ProtocolException {
+		String jsongrid="{\"n\":5,\"matrix\":[[1,0,1,1,0],[1,1,1,1,1],[1,1,1,0,1],[1,0,1,1,0],[1,1,1,1,1]],\"id\":1}";
+		stubResponse("/api/grid1",jsongrid,200);
+		String received=fixture.doGet(2,"1");
+		assertEquals(200,fixture.getLastResponse());
+		assertEquals(jsongrid,received);
+	}
+	
+	@Test(expected=IOException.class)
+	public void testDoGetRequestAGridWrongWhenServerBecameUnreachable() throws IOException, ProtocolException {
+		mockedServer.stop();
+		fixture.doGet(2,"1");
+	}
+	
+	@Test(expected=IOException.class)
+	public void testDoGetRequestGridWrongWhenServerCannotPerformOperation() throws IOException, ProtocolException {
+		stubResponse("/api/grid2","Error",500);
+		fixture.doGet(2, "2");
 	}
 
 }

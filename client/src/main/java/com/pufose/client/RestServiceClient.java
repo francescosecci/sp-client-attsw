@@ -29,7 +29,7 @@ public class RestServiceClient implements IRestServiceClient {
 			return manageAll();
 		}
 		case 2: {
-			return null;
+			return manage(urlToGrid,args);
 		}
 		case 3: {
 			return null;
