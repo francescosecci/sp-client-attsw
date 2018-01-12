@@ -1,18 +1,18 @@
 language: java
 sudo: false
 install: true
-addons:
-  sonarcloud:
-    organization: "francescosecci-github"
-    token:
-      secure: "M/SLn+pStvDrBsDuEuDXVwxP9fGV0UYDMffzO3yA/HEiR6JZuiTrgOrLuTYx63qPJT1R+Xa4wi8eWm0+q8fGLMdINPTUfs6TSQ8owu9wyXQM5nWfUgpe/myn8B+ippuvHp57rGtRRy75nLNosJ04fB7TSUHYmgLvpQm8abriBIc92LjHgHFUlrUjVPGl75dC0x1v4RFk9qpPcRGw06JMa1lx6mt4DN4TXZqcZgvVImZqqHtG6oLqTEO0C/vHg7/aEZJr2BTFT45ig44h5svqJApB0Wjwdw1ROFCufWJV4sf2/iIyfgNj3kcuB8u3YN25DKfnFxkoa1C3bj0RUj4nqjshF9zB0LcQPzJ4qdoj3YuSFh7Mbxm5luY1P2fR39HgF2g3dVGslRcCPaugIIkKAErFh7l92Hy4BSc/bE8JuGf9xSgDOb9274/CfH7km862x4n+rWaKNiRN+77+XRJsMHVD8os4P1QOaLix2uwSf7miDlgD5SPnb8pEn3QhF7JIB1zmN91K6yTgh8/3vks4pnONjgIMZPY0zcDryPnXD7KRnQyeRlXefTI6/jE6HlxUz1GJGPJS1rHS61QsBYNpve9mg2r2+/zf5N9hFxA7MPVtZc5W9m6hEccMNz+UEWDNtu+Ens8eOJ6LDQ7AF5OeXQXSvO4tiLV+PbJJxd4LEmk="
+#addons:
+  #sonarcloud:
+    #organization: "francescosecci-github"
+    #token:
+      #secure: "M/SLn+pStvDrBsDuEuDXVwxP9fGV0UYDMffzO3yA/HEiR6JZuiTrgOrLuTYx63qPJT1R+Xa4wi8eWm0+q8fGLMdINPTUfs6TSQ8owu9wyXQM5nWfUgpe/myn8B+ippuvHp57rGtRRy75nLNosJ04fB7TSUHYmgLvpQm8abriBIc92LjHgHFUlrUjVPGl75dC0x1v4RFk9qpPcRGw06JMa1lx6mt4DN4TXZqcZgvVImZqqHtG6oLqTEO0C/vHg7/aEZJr2BTFT45ig44h5svqJApB0Wjwdw1ROFCufWJV4sf2/iIyfgNj3kcuB8u3YN25DKfnFxkoa1C3bj0RUj4nqjshF9zB0LcQPzJ4qdoj3YuSFh7Mbxm5luY1P2fR39HgF2g3dVGslRcCPaugIIkKAErFh7l92Hy4BSc/bE8JuGf9xSgDOb9274/CfH7km862x4n+rWaKNiRN+77+XRJsMHVD8os4P1QOaLix2uwSf7miDlgD5SPnb8pEn3QhF7JIB1zmN91K6yTgh8/3vks4pnONjgIMZPY0zcDryPnXD7KRnQyeRlXefTI6/jE6HlxUz1GJGPJS1rHS61QsBYNpve9mg2r2+/zf5N9hFxA7MPVtZc5W9m6hEccMNz+UEWDNtu+Ens8eOJ6LDQ7AF5OeXQXSvO4tiLV+PbJJxd4LEmk="
 
 jdk:
   - oraclejdk8
 
 script:
  - mvn -f client/pom.xml clean verify -Pjacoco coveralls:report
- - mvn -f client/pom.xml clean verify -Pjacoco sonar:sonar
+ #- mvn -f client/pom.xml clean verify -Pjacoco sonar:sonar
  - mvn -f client/pom.xml verify -Pfailsafe
  
 after_failure:
