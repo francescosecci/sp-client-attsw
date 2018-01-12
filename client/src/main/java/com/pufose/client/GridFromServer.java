@@ -32,9 +32,8 @@ public class GridFromServer {
 		GridFromServer other = (GridFromServer) obj;
 		if (id != other.id)
 			return false;
-		if (!Arrays.deepEquals(matrix, other.matrix))
-			return false;
-		return true;
+		return (Arrays.deepEquals(matrix, other.matrix));
+			
 	}
 
 }
