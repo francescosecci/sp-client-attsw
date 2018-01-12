@@ -66,7 +66,6 @@ public class RestServiceClient implements IRestServiceClient {
 	private HttpURLConnection createConnection(String url) throws IOException {
 		URL uurl = new URL(url);
 	    HttpURLConnection connection = (HttpURLConnection)uurl.openConnection();
-	    connection.setRequestMethod("GET");
 		return connection;
 	}
 	
