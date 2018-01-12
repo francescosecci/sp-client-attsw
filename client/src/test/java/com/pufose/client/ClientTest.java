@@ -94,7 +94,7 @@ public class ClientTest {
 		client.retrieveGrid("0");
 	}
 	@Test
-	public void testGetPathOK() throws IOException, ProtocolException {
+	public void testGetPathOK() throws IOException {
 		String fromName="node1";
 		String toName="node2";
 		Mockito.doReturn(new Gson().toJson(Arrays.asList(fromName,toName))).when(service).doGet(REQUEST_PATH,"node1TOnode2INwhere");
