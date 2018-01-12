@@ -29,7 +29,7 @@ public class Client implements IClient {
 			return (List<String>) (gson.fromJson(rcv, List.class));
 		} catch (IOException ioe) {
 			manageException(ioe);
-			return new ArrayList<String>();
+			return new ArrayList<>();
 		}
 	}
 
@@ -59,7 +59,7 @@ public class Client implements IClient {
 			return (List<String>)(gson.fromJson(rcv, List.class));
 		}catch(IOException ioe) {
 			manageException(ioe);
-			return new ArrayList<String>();
+			return new ArrayList<>();
 		}
 	}
 

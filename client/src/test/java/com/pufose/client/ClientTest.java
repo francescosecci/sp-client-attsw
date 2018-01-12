@@ -31,7 +31,7 @@ public class ClientTest {
 	}
 	
 	@Test(expected=NullPointerException.class)
-	public void testGetAllGridsWhenNoServiceProvided() throws JsonSyntaxException, IOException, ProtocolException {
+	public void testGetAllGridsWhenNoServiceProvided() throws  IOException, ProtocolException {
 		client.setRestServiceClient(null);
 		client.getAllTables();
 	}
@@ -63,7 +63,7 @@ public class ClientTest {
 	}
 	
 	@Test(expected=JsonSyntaxException.class)
-	public void testGetAllTablesFailServerCannotSendObjectToClient() throws IOException, JsonSyntaxException, ProtocolException {
+	public void testGetAllTablesFailServerCannotSendObjectToClient() throws IOException,  ProtocolException {
 		when(service.doGet(REQUEST_ALL, null)).thenThrow(new IOException());
 		when(service.getLastResponse()).thenReturn(500);
 		client.getAllTables();
@@ -107,7 +107,7 @@ public class ClientTest {
 	
 	}
 	@Test(expected=IOException.class)
-	public void testGetPathFailWhenServerUnreacheable() throws JsonSyntaxException, IOException, ProtocolException {
+	public void testGetPathFailWhenServerUnreacheable() throws  IOException, ProtocolException {
 		String fromName="node1";
 		String toName="node2";
 		String in="grid";
@@ -117,7 +117,7 @@ public class ClientTest {
 		
 	}
 	@Test(expected=JsonSyntaxException.class)
-	public void testGetPathFailWhenServerCannotSendObjectToClient() throws JsonSyntaxException, IOException, ProtocolException {
+	public void testGetPathFailWhenServerCannotSendObjectToClient() throws  IOException, ProtocolException {
 		String fromName="node1";
 		String toName="node2";
 		String in="grid";
