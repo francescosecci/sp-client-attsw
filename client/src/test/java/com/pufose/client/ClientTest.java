@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.http.ProtocolException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -30,46 +31,46 @@ public class ClientTest {
 	}
 	
 	@Test(expected=NullPointerException.class)
-	public void testGetAllGridsWhenNoServiceProvided() throws JsonSyntaxException, IOException {
+	public void testGetAllGridsWhenNoServiceProvided() throws JsonSyntaxException, IOException, ProtocolException {
 		client.setRestServiceClient(null);
 		client.getAllTables();
 	}
 	@Test
-	public void testGetAllTablesOK() throws IOException {
+	public void testGetAllTablesOK() throws IOException, ProtocolException {
 		Mockito.doReturn(new Gson().toJson(Arrays.asList("1","2","3"))).when(service).doGet(REQUEST_ALL, null);
 		List<String> tables=client.getAllTables();
 		verify(service,times(1)).doGet(REQUEST_ALL, null);
 		assertEquals(Arrays.asList("1","2","3"),tables);
 	}
 	@Test
-	public void testGetAllTablesOKWhenEmptyList() throws IOException {
+	public void testGetAllTablesOKWhenEmptyList() throws IOException, ProtocolException {
 		Mockito.doReturn(new Gson().toJson(Arrays.asList())).when(service).doGet(REQUEST_ALL, null);
 		List<String> tables=client.getAllTables();
 		verify(service,times(1)).doGet(REQUEST_ALL, null);
 		assertEquals(Arrays.asList(),tables);
 	}
 	@Test
-	public void testGetAllTablesOKWhenSingleElementList() throws IOException {
+	public void testGetAllTablesOKWhenSingleElementList() throws IOException, ProtocolException {
 		Mockito.doReturn(new Gson().toJson(Arrays.asList("1"))).when(service).doGet(REQUEST_ALL, null);
 		List<String> tables=client.getAllTables();
 		verify(service,times(1)).doGet(REQUEST_ALL, null);
 		assertEquals(Arrays.asList("1"),tables);
 	}
 	@Test(expected=IOException.class)
-	public void testGetAllTablesFailServerUnreacheable() throws IOException {
+	public void testGetAllTablesFailServerUnreacheable() throws IOException, ProtocolException {
 		Mockito.doThrow(new IOException()).when(service).doGet(REQUEST_ALL, null);
 		client.getAllTables();
 	}
 	
 	@Test(expected=JsonSyntaxException.class)
-	public void testGetAllTablesFailServerCannotSendObjectToClient() throws IOException {
+	public void testGetAllTablesFailServerCannotSendObjectToClient() throws IOException, JsonSyntaxException, ProtocolException {
 		when(service.doGet(REQUEST_ALL, null)).thenThrow(new IOException());
 		when(service.getLastResponse()).thenReturn(500);
 		client.getAllTables();
 
 	}
 	@Test
-	public void testGetATableOK() throws IOException {
+	public void testGetATableOK() throws IOException, ProtocolException {
 		int[][] matrix = new int[][] {
 			{1,0},
 			{0,1}
@@ -83,20 +84,20 @@ public class ClientTest {
 	}
 	
 	@Test(expected=IOException.class)
-	public void testGetATableFailServerUnreacheable() throws IOException {
+	public void testGetATableFailServerUnreacheable() throws IOException, ProtocolException {
 		Mockito.doThrow(new IOException()).when(service).doGet(REQUEST_GRID, "0");
 		client.retrieveGrid("0");
 		
 	}
 	
 	@Test(expected=JsonSyntaxException.class)
-	public void testGetATableFailServerCannotSendObjectToClient() throws IOException {
+	public void testGetATableFailServerCannotSendObjectToClient() throws IOException, ProtocolException {
 		when(service.doGet(REQUEST_GRID, "0")).thenThrow(new IOException());
 		when(service.getLastResponse()).thenReturn(500);
 		client.retrieveGrid("0");
 	}
 	@Test
-	public void testGetPathOK() throws IOException {
+	public void testGetPathOK() throws IOException, ProtocolException {
 		String fromName="node1";
 		String toName="node2";
 		Mockito.doReturn(new Gson().toJson(Arrays.asList(fromName,toName))).when(service).doGet(REQUEST_PATH,"node1TOnode2INwhere");
@@ -106,7 +107,7 @@ public class ClientTest {
 	
 	}
 	@Test(expected=IOException.class)
-	public void testGetPathFailWhenServerUnreacheable() throws JsonSyntaxException, IOException {
+	public void testGetPathFailWhenServerUnreacheable() throws JsonSyntaxException, IOException, ProtocolException {
 		String fromName="node1";
 		String toName="node2";
 		String in="grid";
@@ -116,7 +117,7 @@ public class ClientTest {
 		
 	}
 	@Test(expected=JsonSyntaxException.class)
-	public void testGetPathFailWhenServerCannotSendObjectToClient() throws JsonSyntaxException, IOException {
+	public void testGetPathFailWhenServerCannotSendObjectToClient() throws JsonSyntaxException, IOException, ProtocolException {
 		String fromName="node1";
 		String toName="node2";
 		String in="grid";

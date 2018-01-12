@@ -1,7 +1,10 @@
 package com.pufose.client;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.http.ProtocolException;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -20,43 +23,43 @@ public class Client implements IClient {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> getAllTables() throws JsonSyntaxException, IOException {
+	public List<String> getAllTables() throws IOException, ProtocolException {
 		try {
 			String rcv = (restclient.doGet(1, null));
 			return (List<String>) (gson.fromJson(rcv, List.class));
-		} catch (IOException IOe) {
-			manageException(IOe);
-			return null;
+		} catch (IOException ioe) {
+			manageException(ioe);
+			return new ArrayList<String>();
 		}
 	}
 
-	private void manageException(IOException IOe) throws IOException {
+	private void manageException(IOException ioe) throws IOException {
 		if (restclient.getLastResponse() >= 500) {
 			throw new JsonSyntaxException("");
 		} else {
-			throw IOe;
+			throw ioe;
 		}
 	}
 
-	public GridFromServer retrieveGrid(String name) throws JsonSyntaxException, IOException {
+	public GridFromServer retrieveGrid(String name) throws IOException, ProtocolException {
 		try {
-			GridFromServer retrieved = gson.fromJson(restclient.doGet(2, name), GridFromServer.class);
-			return retrieved;
-		} catch (IOException IOe) {
-			manageException(IOe);
+			return gson.fromJson(restclient.doGet(2, name), GridFromServer.class);
+			
+		} catch (IOException ioe) {
+			manageException(ioe);
 			return null;
 		}
 
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> getShortestPath(String fromName, String toName, String where) throws JsonSyntaxException, IOException  {
+	public List<String> getShortestPath(String fromName, String toName, String where) throws IOException, ProtocolException  {
 		try {
 			String rcv=(restclient.doGet(3, fromName+"TO"+toName+"IN"+where));
 			return (List<String>)(gson.fromJson(rcv, List.class));
-		}catch(IOException IOe) {
-			manageException(IOe);
-			return null;
+		}catch(IOException ioe) {
+			manageException(ioe);
+			return new ArrayList<String>();
 		}
 	}
 
