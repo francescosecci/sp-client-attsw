@@ -9,38 +9,44 @@ import com.google.gson.JsonSyntaxException;
 public class Client implements IClient {
 	private IRestServiceClient restclient;
 	private Gson gson;
-	
+
 	public Client() {
-    	this.gson=new Gson();
-    }
-    public Client(IRestServiceClient restclient) {
-    	this.gson=new Gson();
-    	this.restclient=restclient;
-    }
-	
+		this.gson = new Gson();
+	}
+
+	public Client(IRestServiceClient restclient) {
+		this.gson = new Gson();
+		this.restclient = restclient;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<String> getAllTables() throws JsonSyntaxException, IOException {
 		try {
-			String rcv=(restclient.doGet(1,null));
-			return (List<String>)(gson.fromJson(rcv,List.class));
-		}catch(IOException IOe) {
+			String rcv = (restclient.doGet(1, null));
+			return (List<String>) (gson.fromJson(rcv, List.class));
+		} catch (IOException IOe) {
 			manageException(IOe);
 			return null;
 		}
 	}
+
 	private void manageException(IOException IOe) throws IOException {
-		if(restclient.getLastResponse()>=500) {
+		if (restclient.getLastResponse() >= 500) {
 			throw new JsonSyntaxException("");
-		}
-		else
-		{
+		} else {
 			throw IOe;
 		}
 	}
 
 	public GridFromServer retrieveGrid(String name) throws JsonSyntaxException, IOException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			GridFromServer retrieved = gson.fromJson(restclient.doGet(2, name), GridFromServer.class);
+			return retrieved;
+		} catch (IOException IOe) {
+			manageException(IOe);
+			return null;
+		}
+
 	}
 
 	public List<String> getShortestPath(String fromName, String toName, String where)
@@ -50,10 +56,8 @@ public class Client implements IClient {
 	}
 
 	public void setRestServiceClient(IRestServiceClient restServiceClient) {
-		this.restclient=restServiceClient;
-		
-	}
+		this.restclient = restServiceClient;
 
-	
+	}
 
 }

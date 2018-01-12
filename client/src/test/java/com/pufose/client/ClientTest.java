@@ -67,5 +67,32 @@ public class ClientTest {
 		client.getAllTables();
 
 	}
+	@Test
+	public void testGetATableOK() throws IOException {
+		int[][] matrix = new int[][] {
+			{1,0},
+			{0,1}
+		};
+		GridFromServer fixture=new GridFromServer(matrix,0);
+		String json=new Gson().toJson(fixture);
+		Mockito.doReturn(json).when(service).doGet(REQUEST_GRID, "0");
+		GridFromServer rcv=client.retrieveGrid("0");
+		verify(service,times(1)).doGet(REQUEST_GRID, "0");
+		assertEquals(fixture,rcv);
+	}
+	
+	@Test(expected=IOException.class)
+	public void testGetATableFailServerUnreacheable() throws IOException {
+		Mockito.doThrow(new IOException()).when(service).doGet(REQUEST_GRID, "0");
+		client.retrieveGrid("0");
+		
+	}
+	
+	@Test(expected=JsonSyntaxException.class)
+	public void testGetATableFailServerCannotSendObjectToClient() throws IOException {
+		when(service.doGet(REQUEST_GRID, "0")).thenThrow(new IOException());
+		when(service.getLastResponse()).thenReturn(500);
+		client.retrieveGrid("0");
+	}
 	
 }
