@@ -8,7 +8,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.http.ProtocolException;
-import org.eclipse.jetty.http.HttpTester.Message;
 
 public class RestServiceClient implements IRestServiceClient {
 
