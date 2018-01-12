@@ -19,9 +19,10 @@ import com.google.gson.JsonSyntaxException;
 public class ClientTest {
 	private Client client;
 	private IRestServiceClient service;
-	private static final int REQUEST_ALL=1;
-	private static final int REQUEST_PATH=2;
-	private static final int REQUEST_GRID = 3;
+	private static final int REQUEST_ALL = 1;
+	private static final int REQUEST_GRID = 2;
+	private static final int REQUEST_PATH = 3;
+	
 	@Before
 	public void setUp() {
 		client=new Client();
@@ -94,5 +95,37 @@ public class ClientTest {
 		when(service.getLastResponse()).thenReturn(500);
 		client.retrieveGrid("0");
 	}
+	@Test
+	public void testGetPathOK() throws IOException {
+		String fromName="node1";
+		String toName="node2";
+		Mockito.doReturn(new Gson().toJson(Arrays.asList(fromName,toName))).when(service).doGet(REQUEST_PATH,"node1TOnode2INwhere");
+		List<String> path=client.getShortestPath(fromName,toName,"where");
+		verify(service,times(1)).doGet(REQUEST_PATH, fromName+"TO"+toName+"INwhere");
+		assertEquals(Arrays.asList(fromName,toName),path);
+	
+	}
+	@Test(expected=IOException.class)
+	public void testGetPathFailWhenServerUnreacheable() throws JsonSyntaxException, IOException {
+		String fromName="node1";
+		String toName="node2";
+		String in="grid";
+		Mockito.doThrow(new IOException()).when(service).doGet(REQUEST_PATH, fromName+"TO"+toName+"IN"+in);
+	    client.getShortestPath(fromName, toName, in);
+		
+		
+	}
+	@Test(expected=JsonSyntaxException.class)
+	public void testGetPathFailWhenServerCannotSendObjectToClient() throws JsonSyntaxException, IOException {
+		String fromName="node1";
+		String toName="node2";
+		String in="grid";
+		when(service.doGet(REQUEST_PATH, fromName+"TO"+toName+"IN"+in)).thenThrow(new IOException());
+		when(service.getLastResponse()).thenReturn(500);
+		client.getShortestPath(fromName, toName, in);
+		
+	}
+	
+	
 	
 }

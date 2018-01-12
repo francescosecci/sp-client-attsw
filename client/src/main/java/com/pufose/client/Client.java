@@ -49,10 +49,15 @@ public class Client implements IClient {
 
 	}
 
-	public List<String> getShortestPath(String fromName, String toName, String where)
-			throws JsonSyntaxException, IOException {
-		// TODO Auto-generated method stub
-		return null;
+	@SuppressWarnings("unchecked")
+	public List<String> getShortestPath(String fromName, String toName, String where) throws JsonSyntaxException, IOException  {
+		try {
+			String rcv=(restclient.doGet(3, fromName+"TO"+toName+"IN"+where));
+			return (List<String>)(gson.fromJson(rcv, List.class));
+		}catch(IOException IOe) {
+			manageException(IOe);
+			return null;
+		}
 	}
 
 	public void setRestServiceClient(IRestServiceClient restServiceClient) {
