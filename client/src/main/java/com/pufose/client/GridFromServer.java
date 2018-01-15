@@ -12,6 +12,11 @@ public class GridFromServer {
 		this.id=id;
 	}
 
+	public GridFromServer(int id) {
+		this.matrix=new int[0][0];
+		this.id=id;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -34,6 +39,22 @@ public class GridFromServer {
 			return false;
 		return (Arrays.deepEquals(matrix, other.matrix));
 			
+	}
+	
+	public int getN() {
+		return matrix.length;
+	}
+	
+	public boolean isEnabled(int i, int j) {
+		try {
+			return matrix[i][j]>0;
+		}catch(ArrayIndexOutOfBoundsException e) {
+			return false;
+		}
+	}
+	
+	public String getName(int i, int j) {
+		return i+"_"+j;
 	}
 
 }
