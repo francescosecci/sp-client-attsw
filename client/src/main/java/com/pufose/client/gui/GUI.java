@@ -170,6 +170,10 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if(!connCreated) {
+					alert(NO_CONNECTOR);
+					return;
+				}
 				if (actions.getSelectedIndex() == 0) {
 					requestAll();
 				} else if (actions.getSelectedIndex() == 1) {
@@ -181,19 +185,25 @@ public class GUI {
 			}
 
 			private void caseRequestPath() {
-				if (!pathEnabled && connCreated) {
+				if (!pathEnabled) {
 					alert("Error, you must retrieve a grid first");
 				}
-				requestPath();
-				txtsource.setText("");
-				txtsink.setText("");
+				else
+				{
+					requestPath();
+					txtsource.setText("");
+					txtsink.setText("");
+				}
 			}
 
 			private void caseRequestGrid() {
-				if (!gridEnabled && connCreated) {
+				if (!gridEnabled ) {
 					alert("Error, you must retrieve all grids first");
 				}
-				requestGrid();
+				else 
+				{
+					requestGrid();
+				}
 			}
 
 		});

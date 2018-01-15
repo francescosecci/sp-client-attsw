@@ -404,7 +404,6 @@ public class GUITest  {
 	@After
 	public void tearDown() {
 		window.cleanUp();
-		
 	}
 	
 	
