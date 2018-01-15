@@ -22,7 +22,10 @@
 			**/App.*,
 			**/GridFromServer.*,
 			**/IClient.*,
-			**/IRestServiceClient.*
+			**/IRestServiceClient.*,
+			**/GUI.*,
+			**/GUIpanel.*,
+			**/GraphBuilder.*
 		</sonar.coverage.exclusions>
 	</properties>
 
