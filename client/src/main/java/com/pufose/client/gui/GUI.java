@@ -42,7 +42,7 @@ public class GUI {
 	private JComboBox<String> actions;
 	private JComboBox<String> comboCity;
 	private JLabel lblout;
-	private transient IClient cl;
+	private IClient cl;
 	private boolean gridEnabled;
 	private boolean pathEnabled;
 	private boolean connCreated;
