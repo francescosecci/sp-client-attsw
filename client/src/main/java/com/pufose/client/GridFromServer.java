@@ -12,6 +12,11 @@ public class GridFromServer {
 		this.id=id;
 	}
 
+	public GridFromServer(int id) {
+		this.matrix=new int[0][0];
+		this.id=id;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

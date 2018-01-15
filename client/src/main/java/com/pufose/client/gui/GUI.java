@@ -36,9 +36,9 @@ public class GUI extends JFrame {
 	private JLabel lblout;
 	private IClient cl;
 	private boolean GRID_ENABLED, PATH_ENABLED, CONN_CREATED;
-	private static final String OPERATION_OK="Operation successfully done";
-	private static final String SERVER_ERROR="Error, server cannot perform operation";
-	
+	public static final String OPERATION_OK="Operation successfully done";
+	public static final String SERVER_ERROR="Error, server cannot perform operation";
+	public static final String NO_CONNECTOR="Error, you must create a connector before";
 	public GUI() {
 		super("Shortest Path Client - ATTSW Project 17-18");
 		initializeGui();
@@ -92,6 +92,8 @@ public class GUI extends JFrame {
 			tryToHighlightPath(from, to);
 		} catch (IOException e) {
 			alert(SERVER_ERROR);
+		} catch(NullPointerException e) {
+			alert(NO_CONNECTOR);
 		}
 
 	}
@@ -120,6 +122,8 @@ public class GUI extends JFrame {
 			alert(OPERATION_OK);
 		} catch (IOException e) {
 			alert(SERVER_ERROR);
+		} catch(NullPointerException e) {
+			alert(NO_CONNECTOR);
 		}
 		
 	}
@@ -132,6 +136,8 @@ public class GUI extends JFrame {
 			GRID_ENABLED = true;
 		} catch (IOException e) {
 			alert(SERVER_ERROR);
+		} catch(NullPointerException e) {
+			alert(NO_CONNECTOR);
 		}
 		
 	}
@@ -183,7 +189,7 @@ public class GUI extends JFrame {
 				}
 				case 2: {
 					if (!PATH_ENABLED && CONN_CREATED) {
-						alert("Error, you must retrieve one grid first");
+						alert("Error, you must retrieve a grid first");
 						break;
 					}
 					requestPath();
@@ -199,7 +205,7 @@ public class GUI extends JFrame {
 	}
 
 	private void graphicalAdjustements() {
-		setLocation(50, 50);
+		setLocation(0,0);
 		pack();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
@@ -262,6 +268,7 @@ public class GUI extends JFrame {
 
 	private void createComboBoxes() {
 		actions = new JComboBox<String>();
+		actions.setName("actionsCombo");
 		for (String e : (Arrays.asList("Show all grids", "Request a grid", "Request shortest path"))) { 
 			actions.addItem(e);
 		}

@@ -22,9 +22,9 @@ public class GUIpanel extends JPanel {
 	private int offset_x,offset_y,distance;
 	public static final Color DARKGREEN=Color.decode("#0e7810");
 	public GUIpanel(int MAX_SIZE) {
-		setPreferredSize(new Dimension(1024,600));
-		setMinimumSize(new Dimension(1024,600));
-		setSize(new Dimension(1024,600));
+		setPreferredSize(new Dimension(1024/2,300));
+		setMinimumSize(new Dimension(1024/2,300));
+		setSize(new Dimension(1024/2,300));
 		GRIDSIZE=MAX_SIZE;
 		this.distance=(int)(8*Math.sqrt(MAX_SIZE));
 		setBackground(Color.WHITE);
