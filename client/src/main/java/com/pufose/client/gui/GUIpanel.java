@@ -15,38 +15,40 @@ import javax.swing.JPanel;
 public class GUIpanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private Point[][] GRID;
-	private Color[][] GRIDCOL;
-	private String[][] GRIDNAMES;
-	private int GRIDSIZE;
-	private int offset_x,offset_y,distance;
+	private Point[][] grid;
+	private Color[][] gridColor;
+	private String[][] gridNames;
+	private int gridSize;
+	private int offset_x;
+	private int offset_y;
+	private int distance;
 	public static final Color DARKGREEN=Color.decode("#0e7810");
-	public GUIpanel(int MAX_SIZE) {
+	public GUIpanel(int maxSize) {
 		setPreferredSize(new Dimension(1024/2,300));
 		setMinimumSize(new Dimension(1024/2,300));
 		setSize(new Dimension(1024/2,300));
-		GRIDSIZE=MAX_SIZE;
-		this.distance=(int)(8*Math.sqrt(MAX_SIZE));
+		gridSize=maxSize;
+		this.distance=(int)(8*Math.sqrt(maxSize));
 		setBackground(Color.WHITE);
-		initGrid(MAX_SIZE);
+		initGrid(maxSize);
 		
 		
 	}
 	public Point getLocationOf(int i, int j) {
-		return GRID[i][j].getLocation();
+		return grid[i][j].getLocation();
 	}
 	private void initGrid(int MAX_SIZE) {
-		GRID=new Point[MAX_SIZE][MAX_SIZE];
-		GRIDCOL=new Color[MAX_SIZE][MAX_SIZE];
-		GRIDNAMES=new String[MAX_SIZE][MAX_SIZE];		
+		grid=new Point[MAX_SIZE][MAX_SIZE];
+		gridColor=new Color[MAX_SIZE][MAX_SIZE];
+		gridNames=new String[MAX_SIZE][MAX_SIZE];		
 		offset_x=getWidth()/2-(MAX_SIZE*distance/4);
 		offset_y=getHeight()/2-(MAX_SIZE*distance/4);
 		for(int i=0; i<MAX_SIZE;i++) {
 			for(int j=0; j<MAX_SIZE;j++)
 			{
-				GRID[j][i]=new Point(offset_x+i*distance,offset_y+j*distance);
-				GRIDCOL[j][i]=getBackground();
-				GRIDNAMES[j][i]="";
+				grid[j][i]=new Point(offset_x+i*distance,offset_y+j*distance);
+				gridColor[j][i]=getBackground();
+				gridNames[j][i]="";
 			}
 		}
 		
@@ -54,10 +56,10 @@ public class GUIpanel extends JPanel {
 	
 	
 	public void reset() {
-		for(int i=0; i<GRIDSIZE; i++) {
-			for(int j=0; j<GRIDSIZE;j++) {
-				GRIDCOL[i][j]=(getBackground());
-				GRIDNAMES[i][j]="";
+		for(int i=0; i<gridSize; i++) {
+			for(int j=0; j<gridSize;j++) {
+				gridColor[i][j]=(getBackground());
+				gridNames[i][j]="";
 			}
 		}
 		setVisible(false);
@@ -77,21 +79,22 @@ public class GUIpanel extends JPanel {
 		repaint();
 	}
 	private void enablePointProcedure(String toPrintInPoint, int i, int j, Color col) {
-		GRIDNAMES[i][j]= new String(toPrintInPoint);
-		GRIDCOL[i][j]=(col);
+		gridNames[i][j]= toPrintInPoint;
+		gridColor[i][j]=(col);
 	}
 	
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawRect(0, 0, getWidth()-1, getHeight()-1);
-		for(int i=0; i<GRIDSIZE;i++)
+		for(int i=0; i<gridSize;i++)
 		{
-			for(int j=0; j<GRIDSIZE;j++)
+			for(int j=0; j<gridSize;j++)
 			{
-				g.setColor(GRIDCOL[i][j]);
-				g.fillOval((int)GRID[i][j].getX()-8/2, (int)GRID[i][j].getY()-8/2, 8, 8);
+				g.setColor(gridColor[i][j]);
+				g.fillOval((int)grid[i][j].getX()-8/2, (int)grid[i][j].getY()-8/2, 8, 8);
 				g.setFont(g.getFont().deriveFont(Font.BOLD));
-				g.drawString(GRIDNAMES[i][j], (int)GRID[i][j].getX()+8/2, (int)GRID[i][j].getY()-8/2);
+				g.drawString(gridNames[i][j], (int)grid[i][j].getX()+8/2, (int)grid[i][j].getY()-8/2);
 			}
 		}
 	
@@ -101,10 +104,10 @@ public class GUIpanel extends JPanel {
 	public void highlightPath(List<String> path) {
 		
 		if(path==null) {
-			for(int i=0; i<GRIDSIZE;i++) {
-				for(int j=0; j<GRIDSIZE;j++) {
-					if(GRIDCOL[i][j].equals(DARKGREEN)) {
-						GRIDCOL[i][j]=Color.RED;
+			for(int i=0; i<gridSize;i++) {
+				for(int j=0; j<gridSize;j++) {
+					if(gridColor[i][j].equals(DARKGREEN)) {
+						gridColor[i][j]=Color.RED;
 					}
 				}
 			}
@@ -116,8 +119,8 @@ public class GUIpanel extends JPanel {
 				
 				int i=e.charAt(0)-48;
 				int j=e.charAt(2)-48;
-				if(GRIDCOL[i][j].equals(Color.RED))
-					GRIDCOL[i][j]=(DARKGREEN);
+				if(gridColor[i][j].equals(Color.RED))
+					gridColor[i][j]=(DARKGREEN);
 			}
 		}
 		setVisible(false);
@@ -125,11 +128,11 @@ public class GUIpanel extends JPanel {
 		setVisible(true);
 	}
 	public Color getColorInPoint(int i, int j) {
-			return GRIDCOL[i][j];
+			return gridColor[i][j];
 		
 	}
 	public String getPrintedNameIn(int i, int j) {
-		return GRIDNAMES[i][j];
+		return gridNames[i][j];
 		
 	}
 	public void enableNotHighlightablePoint(String toPrintInPoint, int i, int j) {
@@ -154,7 +157,7 @@ public class GUIpanel extends JPanel {
 		paintComponent(g2);
 	}
 	public Point[][] getAllLocations() {
-		return GRID.clone();
+		return grid.clone();
 	}
 	
 
