@@ -40,7 +40,7 @@ public class GUITest  {
 	public void setUp() throws AWTException {
 		frame = GuiActionRunner.execute(()-> new GUI());
 		frame.mockClient(cl=Mockito.mock(IClient.class));
-		window=new FrameFixture(frame);
+		window=new FrameFixture(frame.getFrame());
 		window.show();
 		
 	}

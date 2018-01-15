@@ -22,35 +22,36 @@ import com.pufose.client.GridFromServer;
 import com.pufose.client.IClient;
 import com.pufose.client.RestServiceClient;
 
-public class GUI extends JFrame {
+public class GUI {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private JFrame window;
 	private GUIpanel panel;
-	private JPanel north; 
+	private JPanel north;
 	private JPanel south;
-	private JTextField server; 
-	private JTextField port; 
+	private JTextField server;
+	private JTextField port;
 	private JTextField urlToAll;
 	private JTextField txtsource;
 	private JTextField txtsink;
 	private JButton perform;
 	private JButton createConnector;
 	private JButton reset;
-	private JComboBox<String> actions; 
+	private JComboBox<String> actions;
 	private JComboBox<String> comboCity;
 	private JLabel lblout;
-	private IClient cl;
-	private boolean gridEnabled; 
-	private boolean pathEnabled; 
+	private transient IClient cl;
+	private boolean gridEnabled;
+	private boolean pathEnabled;
 	private boolean connCreated;
-	public static final String OPERATION_OK="Operation successfully done";
-	public static final String SERVER_ERROR="Error, server cannot perform operation";
-	public static final String NO_CONNECTOR="Error, you must create a connector before";
+	public static final String OPERATION_OK = "Operation successfully done";
+	public static final String SERVER_ERROR = "Error, server cannot perform operation";
+	public static final String NO_CONNECTOR = "Error, you must create a connector before";
+
 	public GUI() {
-		super("Shortest Path Client - ATTSW Project 17-18");
+		window = new JFrame("Shortest Path Client - ATTSW Project 17-18");
 		initializeGui();
 		initializeLocalFields();
 
@@ -70,7 +71,7 @@ public class GUI extends JFrame {
 
 	private void alert(String message) {
 		lblout.setText(message);
-		pack();
+		window.pack();
 	}
 
 	public void resetPane() {
@@ -103,7 +104,7 @@ public class GUI extends JFrame {
 			tryToHighlightPath(from, to);
 		} catch (IOException e) {
 			alert(SERVER_ERROR);
-		} catch(NullPointerException e) {
+		} catch (NullPointerException e) {
 			alert(NO_CONNECTOR);
 		}
 
@@ -133,24 +134,24 @@ public class GUI extends JFrame {
 			alert(OPERATION_OK);
 		} catch (IOException e) {
 			alert(SERVER_ERROR);
-		} catch(NullPointerException e) {
+		} catch (NullPointerException e) {
 			alert(NO_CONNECTOR);
 		}
-		
+
 	}
 
 	private void requestAll() {
-		
+
 		try {
 			tryToGetAllTables();
 			alert(OPERATION_OK);
 			gridEnabled = true;
 		} catch (IOException e) {
 			alert(SERVER_ERROR);
-		} catch(NullPointerException e) {
+		} catch (NullPointerException e) {
 			alert(NO_CONNECTOR);
 		}
-		
+
 	}
 
 	private void tryToGetAllTables() throws IOException {
@@ -163,74 +164,57 @@ public class GUI extends JFrame {
 
 	private void createEvents() {
 
-		reset.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				resetPane();
-
-			}
-
-		});
-		createConnector.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				createConnection();
-
-			}
-
-		});
+		reset.addActionListener((ActionEvent arg0)->resetPane());
+		createConnector.addActionListener((ActionEvent arg0)->createConnection());
 		perform.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-
-				switch (actions.getSelectedIndex()) {
-				case 0: {
+				if (actions.getSelectedIndex() == 0) {
 					requestAll();
-					break;
+				} else if (actions.getSelectedIndex() == 1) {
+					caseRequestGrid();
+				} else if (actions.getSelectedIndex() == 2) {
+					caseRequestPath();
 				}
-				case 1: {
 
-					if (!gridEnabled && connCreated) {
-						alert("Error, you must retrieve all grids first"); 
-						break;
-					}
-					requestGrid();
-					break;
-				}
-				case 2: {
-					if (!pathEnabled && connCreated) {
-						alert("Error, you must retrieve a grid first");
-						break;
-					}
-					requestPath();
-					txtsource.setText("");
-					txtsink.setText("");
+			}
 
-					break;
+			private void caseRequestPath() {
+				if (!pathEnabled && connCreated) {
+					alert("Error, you must retrieve a grid first");
 				}
+				requestPath();
+				txtsource.setText("");
+				txtsink.setText("");
+			}
+
+			private void caseRequestGrid() {
+				if (!gridEnabled && connCreated) {
+					alert("Error, you must retrieve all grids first");
 				}
+				requestGrid();
 			}
 
 		});
 	}
 
 	private void graphicalAdjustements() {
-		setLocation(0,0);
-		pack();
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);
+		window.setLocation(0, 0);
+		window.pack();
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setVisible(true);
 		initFields();
-		lblout.setFont(new Font("", Font.BOLD, 16)); 
+		lblout.setFont(new Font("", Font.BOLD, 16));
 		lblout.setForeground(Color.BLUE);
 
 	}
 
 	private void initFields() {
-		server.setText("localhost"); 
+		server.setText("localhost");
 		port.setText("8080");
 		urlToAll.setText("/api/");
-		
+
 	}
 
 	private void addWidgetsToFrame() {
@@ -240,7 +224,7 @@ public class GUI extends JFrame {
 	}
 
 	private void addToContentPane() {
-		Container c = getContentPane();
+		Container c = window.getContentPane();
 		c.add(north, BorderLayout.NORTH);
 		c.add(panel, BorderLayout.CENTER);
 		c.add(south, BorderLayout.SOUTH);
@@ -250,9 +234,9 @@ public class GUI extends JFrame {
 		south.add(actions);
 
 		south.add(comboCity);
-		south.add(new JLabel("Source node")); 
+		south.add(new JLabel("Source node"));
 		south.add(txtsource);
-		south.add(new JLabel("Sink node")); 
+		south.add(new JLabel("Sink node"));
 		south.add(txtsink);
 		south.add(perform);
 		south.add(reset);
@@ -260,11 +244,11 @@ public class GUI extends JFrame {
 	}
 
 	private void addToNorth() {
-		north.add(new JLabel("Hostname")); 
+		north.add(new JLabel("Hostname"));
 		north.add(server);
-		north.add(new JLabel("Port")); 
+		north.add(new JLabel("Port"));
 		north.add(port);
-		north.add(new JLabel("Url to RESTful api")); 
+		north.add(new JLabel("Url to RESTful api"));
 		north.add(urlToAll);
 		north.add(createConnector);
 	}
@@ -280,44 +264,44 @@ public class GUI extends JFrame {
 	private void createComboBoxes() {
 		actions = new JComboBox<>();
 		actions.setName("actionsCombo");
-		for (String e : (Arrays.asList("Show all grids", "Request a grid", "Request shortest path"))) { 
+		for (String e : (Arrays.asList("Show all grids", "Request a grid", "Request shortest path"))) {
 			actions.addItem(e);
 		}
 		comboCity = new JComboBox<>();
-		comboCity.setName("gridCombo"); 
+		comboCity.setName("gridCombo");
 	}
 
 	private void createButtons() {
-		perform = new JButton("Perform"); 
-		perform.setName("btnPerform"); 
-		createConnector = new JButton("Create connector"); 
-		createConnector.setName("btnCreateConn"); 
-		reset = new JButton("Reset"); 
-		reset.setName("btnReset"); 
+		perform = new JButton("Perform");
+		perform.setName("btnPerform");
+		createConnector = new JButton("Create connector");
+		createConnector.setName("btnCreateConn");
+		reset = new JButton("Reset");
+		reset.setName("btnReset");
 	}
 
 	private void createTextFields() {
 		server = new JTextField(10);
-		server.setName("serverField"); 
+		server.setName("serverField");
 		port = new JTextField(6);
-		port.setName("portField"); 
+		port.setName("portField");
 		urlToAll = new JTextField(10);
-		urlToAll.setName("apiField"); 
+		urlToAll.setName("apiField");
 		lblout = new JLabel();
-		lblout.setName("lblOutput"); 
+		lblout.setName("lblOutput");
 		txtsource = new JTextField(4);
 		txtsink = new JTextField(4);
-		txtsource.setName("sourceField"); 
-		txtsink.setName("sinkField"); 
+		txtsource.setName("sourceField");
+		txtsink.setName("sinkField");
 	}
 
 	private void createPanels() {
 		north = new JPanel();
-		north.setName("northPanel"); 
+		north.setName("northPanel");
 		south = new JPanel();
-		south.setName("southPanel"); 
+		south.setName("southPanel");
 		panel = new GUIpanel(20);
-		panel.setName("guiPanel"); 
+		panel.setName("guiPanel");
 	}
 
 	public static GUI createGui() {
@@ -332,6 +316,10 @@ public class GUI extends JFrame {
 
 	public IClient getClient() {
 		return this.cl;
+	}
+
+	public JFrame getFrame() {
+		return this.window;
 	}
 
 }
