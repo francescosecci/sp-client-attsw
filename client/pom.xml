@@ -171,6 +171,10 @@
 						<version>2.19.1</version>
 						<configuration>
 							<!-- Sets the VM argument line used when unit tests are run. -->
+							<excludes>
+								<exclude>**/GUIpanelTest.java</exclude>
+								<exclude>**/GUITest.java</exclude>
+							</excludes>
 							<argLine>${surefireArgLine}</argLine>
 						</configuration>
 					</plugin>
@@ -211,6 +215,8 @@
 						<configuration>
 							<includes>
 								<include>**/*IT.java</include>
+								<include>**/GUIpanelTest.java</include>
+								<include>**/GUITest.java</include>
 							</includes>
 						</configuration>
 						<executions>
