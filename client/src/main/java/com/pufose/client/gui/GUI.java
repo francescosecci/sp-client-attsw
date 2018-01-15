@@ -30,7 +30,7 @@ public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private GUIpanel panel;
 	private JPanel north; 
-	private JPanel SOUTH;
+	private JPanel south;
 	private JTextField server; 
 	private JTextField port; 
 	private JTextField urlToAll;
@@ -242,20 +242,20 @@ public class GUI extends JFrame {
 		Container c = getContentPane();
 		c.add(north, BorderLayout.NORTH);
 		c.add(panel, BorderLayout.CENTER);
-		c.add(SOUTH, BorderLayout.SOUTH);
+		c.add(south, BorderLayout.SOUTH);
 	}
 
 	private void addToSouth() {
-		SOUTH.add(actions);
+		south.add(actions);
 
-		SOUTH.add(comboCity);
-		SOUTH.add(new JLabel("Source node")); 
-		SOUTH.add(txtsource);
-		SOUTH.add(new JLabel("Sink node")); 
-		SOUTH.add(txtsink);
-		SOUTH.add(perform);
-		SOUTH.add(reset);
-		SOUTH.add(lblout);
+		south.add(comboCity);
+		south.add(new JLabel("Source node")); 
+		south.add(txtsource);
+		south.add(new JLabel("Sink node")); 
+		south.add(txtsink);
+		south.add(perform);
+		south.add(reset);
+		south.add(lblout);
 	}
 
 	private void addToNorth() {
@@ -313,8 +313,8 @@ public class GUI extends JFrame {
 	private void createPanels() {
 		north = new JPanel();
 		north.setName("northPanel"); 
-		SOUTH = new JPanel();
-		SOUTH.setName("southPanel"); 
+		south = new JPanel();
+		south.setName("southPanel"); 
 		panel = new GUIpanel(20);
 		panel.setName("guiPanel"); 
 	}
