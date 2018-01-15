@@ -97,9 +97,8 @@ public class RestServiceClient implements IRestServiceClient {
 		if (urlToPath == null) {
 			if (other.urlToPath != null)
 				return false;
-		} else if (!urlToPath.equals(other.urlToPath))
-			return false;
-		return true;
+		} return !urlToPath.equals(other.urlToPath);
+	
 	}
 
 	private HttpURLConnection createConnection(String url) throws IOException {
