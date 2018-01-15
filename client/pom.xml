@@ -23,9 +23,9 @@
 			**/GridFromServer.*,
 			**/IClient.*,
 			**/IRestServiceClient.*,
-			**/GUI.*,
-			**/GUIpanel.*,
-			**/GraphBuilder.*
+			**/gui/GUI.*,
+			**/gui/GUIpanel.*,
+			**/gui/GraphBuilder.*
 		</sonar.coverage.exclusions>
 	</properties>
 
@@ -133,6 +133,9 @@
 								<exclude>**/IClient.*</exclude>
 								<exclude>**/IRestServiceClient.*</exclude>
 								<exclude>**/GridFromServer.*</exclude>
+								<exclude>**/gui/GUI.*</exclude>
+								<exclude>**/gui/GUIpanel.*</exclude>
+								<exclude>**/gui/GraphBuilder.*</exclude>
 							</excludes>
 						</configuration>
 						<executions>
