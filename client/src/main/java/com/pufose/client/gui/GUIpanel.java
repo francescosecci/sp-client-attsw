@@ -19,8 +19,8 @@ public class GUIpanel extends JPanel {
 	private Color[][] gridColor;
 	private String[][] gridNames;
 	private int gridSize;
-	private int offset_x;
-	private int offset_y;
+	private int offsetX;
+	private int offsetY;
 	private int distance;
 	public static final Color DARKGREEN=Color.decode("#0e7810");
 	public GUIpanel(int maxSize) {
@@ -37,16 +37,16 @@ public class GUIpanel extends JPanel {
 	public Point getLocationOf(int i, int j) {
 		return grid[i][j].getLocation();
 	}
-	private void initGrid(int MAX_SIZE) {
-		grid=new Point[MAX_SIZE][MAX_SIZE];
-		gridColor=new Color[MAX_SIZE][MAX_SIZE];
-		gridNames=new String[MAX_SIZE][MAX_SIZE];		
-		offset_x=getWidth()/2-(MAX_SIZE*distance/4);
-		offset_y=getHeight()/2-(MAX_SIZE*distance/4);
-		for(int i=0; i<MAX_SIZE;i++) {
-			for(int j=0; j<MAX_SIZE;j++)
+	private void initGrid(int maxSize) {
+		grid=new Point[maxSize][maxSize];
+		gridColor=new Color[maxSize][maxSize];
+		gridNames=new String[maxSize][maxSize];		
+		offsetX=getWidth()/2-(maxSize*distance/4);
+		offsetY=getHeight()/2-(maxSize*distance/4);
+		for(int i=0; i<maxSize;i++) {
+			for(int j=0; j<maxSize;j++)
 			{
-				grid[j][i]=new Point(offset_x+i*distance,offset_y+j*distance);
+				grid[j][i]=new Point(offsetX+i*distance,offsetY+j*distance);
 				gridColor[j][i]=getBackground();
 				gridNames[j][i]="";
 			}
@@ -140,10 +140,10 @@ public class GUIpanel extends JPanel {
 		
 	}
 	public int getOffsetY() {
-		return offset_y;
+		return offsetY;
 	}
 	public int getOffsetX() {
-		return offset_x;
+		return offsetX;
 	}
 	public int getDistance() {
 		return distance;

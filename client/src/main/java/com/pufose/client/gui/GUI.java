@@ -29,7 +29,7 @@ public class GUI extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private GUIpanel panel;
-	private JPanel NORTH; 
+	private JPanel north; 
 	private JPanel SOUTH;
 	private JTextField server; 
 	private JTextField port; 
@@ -43,9 +43,9 @@ public class GUI extends JFrame {
 	private JComboBox<String> comboCity;
 	private JLabel lblout;
 	private IClient cl;
-	private boolean grid_Enabled; 
-	private boolean path_Enebled; 
-	private boolean conn_Created;
+	private boolean gridEnabled; 
+	private boolean pathEnabled; 
+	private boolean connCreated;
 	public static final String OPERATION_OK="Operation successfully done";
 	public static final String SERVER_ERROR="Error, server cannot perform operation";
 	public static final String NO_CONNECTOR="Error, you must create a connector before";
@@ -58,7 +58,7 @@ public class GUI extends JFrame {
 
 	private void initializeLocalFields() {
 		cl = new Client();
-		grid_Enabled = path_Enebled = conn_Created = false;
+		gridEnabled = pathEnabled = connCreated = false;
 	}
 
 	private void initializeGui() {
@@ -74,7 +74,7 @@ public class GUI extends JFrame {
 
 	public void resetPane() {
 		panel.reset();
-		path_Enebled = false;
+		pathEnabled = false;
 		comboCity.setEnabled(true);
 	}
 
@@ -84,7 +84,7 @@ public class GUI extends JFrame {
 
 		RestServiceClient rsc = (new RestServiceClient(urltoall));
 		cl.setRestServiceClient(rsc);
-		conn_Created = true;
+		connCreated = true;
 	}
 
 	private void requestPath() {
@@ -128,7 +128,7 @@ public class GUI extends JFrame {
 			grid = cl.retrieveGrid((String) comboCity.getSelectedItem());
 			GraphBuilder.makeGraph(grid, panel);
 			comboCity.setEnabled(false);
-			path_Enebled = true;
+			pathEnabled = true;
 			alert(OPERATION_OK);
 		} catch (IOException e) {
 			alert(SERVER_ERROR);
@@ -143,7 +143,7 @@ public class GUI extends JFrame {
 		try {
 			tryToGetAllTables();
 			alert(OPERATION_OK);
-			grid_Enabled = true;
+			gridEnabled = true;
 		} catch (IOException e) {
 			alert(SERVER_ERROR);
 		} catch(NullPointerException e) {
@@ -190,7 +190,7 @@ public class GUI extends JFrame {
 				}
 				case 1: {
 
-					if (!grid_Enabled && conn_Created) {
+					if (!gridEnabled && connCreated) {
 						alert("Error, you must retrieve all grids first"); 
 						break;
 					}
@@ -198,7 +198,7 @@ public class GUI extends JFrame {
 					break;
 				}
 				case 2: {
-					if (!path_Enebled && conn_Created) {
+					if (!pathEnabled && connCreated) {
 						alert("Error, you must retrieve a grid first");
 						break;
 					}
@@ -240,7 +240,7 @@ public class GUI extends JFrame {
 
 	private void addToContentPane() {
 		Container c = getContentPane();
-		c.add(NORTH, BorderLayout.NORTH);
+		c.add(north, BorderLayout.NORTH);
 		c.add(panel, BorderLayout.CENTER);
 		c.add(SOUTH, BorderLayout.SOUTH);
 	}
@@ -259,13 +259,13 @@ public class GUI extends JFrame {
 	}
 
 	private void addToNorth() {
-		NORTH.add(new JLabel("Hostname")); 
-		NORTH.add(server);
-		NORTH.add(new JLabel("Port")); 
-		NORTH.add(port);
-		NORTH.add(new JLabel("Url to RESTful api")); 
-		NORTH.add(urlToAll);
-		NORTH.add(createConnector);
+		north.add(new JLabel("Hostname")); 
+		north.add(server);
+		north.add(new JLabel("Port")); 
+		north.add(port);
+		north.add(new JLabel("Url to RESTful api")); 
+		north.add(urlToAll);
+		north.add(createConnector);
 	}
 
 	private void createWidgets() {
@@ -311,8 +311,8 @@ public class GUI extends JFrame {
 	}
 
 	private void createPanels() {
-		NORTH = new JPanel();
-		NORTH.setName("northPanel"); 
+		north = new JPanel();
+		north.setName("northPanel"); 
 		SOUTH = new JPanel();
 		SOUTH.setName("southPanel"); 
 		panel = new GUIpanel(20);
@@ -325,7 +325,7 @@ public class GUI extends JFrame {
 
 	public void mockClient(IClient mock) {
 		this.cl = mock;
-		conn_Created = (mock != null);
+		connCreated = (mock != null);
 
 	}
 
