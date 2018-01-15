@@ -1,25 +1,18 @@
 package com.pufose.client;
 
-import java.awt.EventQueue;
+
+import org.assertj.swing.edt.GuiActionRunner;
 
 import com.pufose.client.gui.GUI;
 
 /**
- * Hello world!
+ * Main application entry point
  *
  */
 public class App 
 {
     public static void main( String[] args )
     {
-       EventQueue.invokeLater(new Runnable() {
-
-		@Override
-		public void run() {
-			new GUI();
-			
-		}
-    	   
-       });
+    	GuiActionRunner.execute(()-> new GUI());
     }
 }
