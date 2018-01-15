@@ -18,7 +18,7 @@ public class RestServiceClient implements IRestServiceClient {
 		this.urlToPath = urlToApi + "path";
 		this.resp=0;
 	}
-
+	
 	public String doGet(int request, String args) throws IOException {
 		if(request==1) {
 			return manageAll();
@@ -53,7 +53,7 @@ public class RestServiceClient implements IRestServiceClient {
 		}
 		return sb.toString();
 	}
-	
+
 	private HttpURLConnection getConnection(String url) throws IOException {
 		HttpURLConnection connection;
 		connection = createConnection(url);
@@ -65,44 +65,44 @@ public class RestServiceClient implements IRestServiceClient {
 	@Override
 	public int hashCode() {
 
-		final int prime = 31;// $COVERAGE-IGNORE$
-		int result = 1;// $COVERAGE-IGNORE$
-		result = prime * result + resp;// $COVERAGE-IGNORE$
-		result = prime * result + ((urlToAll == null) ? 0 : urlToAll.hashCode());// $COVERAGE-IGNORE$
-		result = prime * result + ((urlToGrid == null) ? 0 : urlToGrid.hashCode());// $COVERAGE-IGNORE$
-		result = prime * result + ((urlToPath == null) ? 0 : urlToPath.hashCode());// $COVERAGE-IGNORE$
-		return result;// $COVERAGE-IGNORE$
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + resp;
+		result = prime * result + ((urlToAll == null) ? 0 : urlToAll.hashCode());
+		result = prime * result + ((urlToGrid == null) ? 0 : urlToGrid.hashCode());
+		result = prime * result + ((urlToPath == null) ? 0 : urlToPath.hashCode());
+		return result;
 	}
 
 	
 	@Override
 	public boolean equals(Object obj) {
 	
-		if (this == obj) // $COVERAGE-IGNORE$
-			return true; // $COVERAGE-IGNORE$
-		if (obj == null) // $COVERAGE-IGNORE$
-			return false; // $COVERAGE-IGNORE$
-		if (getClass() != obj.getClass()) // $COVERAGE-IGNORE$
-			return false; // $COVERAGE-IGNORE$
-		RestServiceClient other = (RestServiceClient) obj; // $COVERAGE-IGNORE$
-		if (resp != other.resp) // $COVERAGE-IGNORE$
-			return false; // $COVERAGE-IGNORE$
-		if (urlToAll == null) { // $COVERAGE-IGNORE$
-			if (other.urlToAll != null) // $COVERAGE-IGNORE$
-				return false; // $COVERAGE-IGNORE$
-		} else if (!urlToAll.equals(other.urlToAll)) // $COVERAGE-IGNORE$
-			return false; // $COVERAGE-IGNORE$
-		if (urlToGrid == null) { // $COVERAGE-IGNORE$
-			if (other.urlToGrid != null) // $COVERAGE-IGNORE$
-				return false;// $COVERAGE-IGNORE$
-		} else if (!urlToGrid.equals(other.urlToGrid))// $COVERAGE-IGNORE$
-			return false;// $COVERAGE-IGNORE$
-		if (urlToPath == null) {// $COVERAGE-IGNORE$
-			if (other.urlToPath != null)// $COVERAGE-IGNORE$
-				return false;// $COVERAGE-IGNORE$
-		} else if (!urlToPath.equals(other.urlToPath))// $COVERAGE-IGNORE$
-			return false;// $COVERAGE-IGNORE$
-		return true;// $COVERAGE-IGNORE$
+		if (this == obj) 
+			return true; 
+		if (obj == null) 
+			return false; 
+		if (getClass() != obj.getClass()) 
+			return false; 
+		RestServiceClient other = (RestServiceClient) obj; 
+		if (resp != other.resp) 
+			return false; 
+		if (urlToAll == null) { 
+			if (other.urlToAll != null) 
+				return false; 
+		} else if (!urlToAll.equals(other.urlToAll)) 
+			return false; 
+		if (urlToGrid == null) { 
+			if (other.urlToGrid != null) 
+				return false;
+		} else if (!urlToGrid.equals(other.urlToGrid))
+			return false;
+		if (urlToPath == null) {
+			if (other.urlToPath != null)
+				return false;
+		} else if (!urlToPath.equals(other.urlToPath))
+			return false;
+		return true;
 	}
 
 	private HttpURLConnection createConnection(String url) throws IOException {
