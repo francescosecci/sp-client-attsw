@@ -5,7 +5,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -47,15 +46,6 @@ public class RestServiceClientTest {
 	public void testDoGetWhenWrongRequest() throws IOException {
 		fixture.doGet(-1, null);
 		
-	}
-	@Test
-	public void testEquals() {
-		RestServiceClient expectedequal=new RestServiceClient("http://localhost:8000/api/");
-		assertTrue(fixture.equals(expectedequal));
-	}
-	@Test
-	public void testHashCode() {
-		assertEquals(-1459659181,fixture.hashCode());
 	}
 	@Test
 	public void testDoGetRequestAllOKEmptyList() throws IOException {

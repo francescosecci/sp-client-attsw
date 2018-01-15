@@ -23,9 +23,6 @@
 			**/GridFromServer.*,
 			**/IClient.*,
 			**/IRestServiceClient.*,
-			**/gui/GUI.*,
-			**/gui/GUIpanel.*,
-			**/gui/GraphBuilder.*
 		</sonar.coverage.exclusions>
 	</properties>
 
@@ -133,9 +130,6 @@
 								<exclude>**/IClient.*</exclude>
 								<exclude>**/IRestServiceClient.*</exclude>
 								<exclude>**/GridFromServer.*</exclude>
-								<exclude>**/gui/GUI.*</exclude>
-								<exclude>**/gui/GUIpanel.*</exclude>
-								<exclude>**/gui/GraphBuilder.*</exclude>
 							</excludes>
 						</configuration>
 						<executions>
@@ -169,6 +163,35 @@
 									<outputDirectory>${jacoco.report.path}</outputDirectory>
 								</configuration>
 							</execution>
+							<execution>
+								<id>pre-integration-test</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+								<configuration>
+									<!-- Sets the path to the file which contains the execution data. -->
+									<destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>
+									<!-- Sets the name of the property containing the settings for JaCoCo 
+										runtime agent. -->
+									<propertyName>failsafeArgLine</propertyName>
+								</configuration>
+							</execution>
+							<!-- Ensures that the code coverage report for integration tests after 
+								integration tests have been run. -->
+							<execution>
+								<id>post-integration-test</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>report</goal>
+								</goals>
+								<configuration>
+									<!-- Sets the path to the file which contains the execution data. -->
+									<dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>
+									<!-- Sets the output directory for the code coverage report. -->
+									<outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
+								</configuration>
+							</execution>
 						</executions>
 					</plugin>
 					<plugin>
@@ -180,10 +203,31 @@
 							<excludes>
 								<exclude>**/GUIpanelTest.*</exclude>
 								<exclude>**/GUITest.*</exclude>
-								<exclude>**/GraphBuilder.*</exclude>
 							</excludes>
 							<argLine>${surefireArgLine}</argLine>
 						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<configuration>
+							<includes>
+								<include>**/GUIpanelTest.*</include>
+								<include>**/GUITest.*</include>
+							</includes>
+							<excludes>
+								<exclude>**/*IT.**</exclude>
+							</excludes>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 				<pluginManagement>
@@ -222,9 +266,11 @@
 						<configuration>
 							<includes>
 								<include>**/*IT.*</include>
-								<include>**/GUIpanelTest.*</include>
-								<include>**/GUITest.*</include>
 							</includes>
+							<excludes>
+								<exclude>**/GUIpanelTest.*</exclude>
+								<exclude>**/GUITest.*</exclude>
+							</excludes>
 						</configuration>
 						<executions>
 							<execution>
