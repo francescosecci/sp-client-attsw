@@ -73,6 +73,7 @@ public class RestServiceClient implements IRestServiceClient {
 		return result;
 	}
 
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -97,8 +98,9 @@ public class RestServiceClient implements IRestServiceClient {
 		if (urlToPath == null) {
 			if (other.urlToPath != null)
 				return false;
-		} return !urlToPath.equals(other.urlToPath);
-	
+		} else if (!urlToPath.equals(other.urlToPath))
+			return false;
+		return true;
 	}
 
 	private HttpURLConnection createConnection(String url) throws IOException {
@@ -111,5 +113,6 @@ public class RestServiceClient implements IRestServiceClient {
 	public int getLastResponse() {
 		return this.resp;
 	}
+
 
 }
