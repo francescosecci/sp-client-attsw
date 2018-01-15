@@ -229,7 +229,7 @@ public class GUI extends JFrame {
 	private void initFields() {
 		server.setText("localhost"); 
 		port.setText("8080");
-		urlToAll.setText("/api");
+		urlToAll.setText("/api/");
 		
 	}
 

@@ -49,7 +49,7 @@ public class GUITest  {
 		window.requireTitle("Shortest Path Client - ATTSW Project 17-18");
 		window.textBox("serverField").requireText("localhost");
 		window.textBox("portField").requireText("8080");
-		window.textBox("apiField").requireText("/api");
+		window.textBox("apiField").requireText("/api/");
 		window.label("lblOutput").requireText("");
 		window.textBox("sinkField").requireText("");
 		window.textBox("sourceField").requireText("");
