@@ -1,6 +1,7 @@
 package com.pufose.client.guitest;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -8,8 +9,10 @@ import static org.mockito.Mockito.when;
 import java.awt.AWTException;
 import java.awt.Color;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JComboBox;
 
@@ -21,9 +24,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mockito;
-
 import com.pufose.client.GridFromServer;
 import com.pufose.client.IClient;
+import com.pufose.client.RestServiceClient;
 import com.pufose.client.gui.GUI;
 import com.pufose.client.gui.GUIpanel;
 
@@ -63,7 +66,18 @@ public class GUITest  {
 		assertEquals(0,tgt1.getItemCount());
 		assertEquals(3,tgt2.getItemCount());
 	}
-	
+	@Test
+	public void testCreateConnector() {
+
+		String prefix = "http://" + window.textBox("serverField").text() + ":" + window.textBox("portField").text();
+		String urltoall = prefix + window.textBox("apiField").text();
+		RestServiceClient expected = (new RestServiceClient(urltoall));
+		window.button("btnCreateConn").click();
+		window.label("lblOutput").requireText(GUI.OPERATION_OK);
+		verify(cl).setRestServiceClient(eq(expected));
+
+		
+	}
 	private GUIpanel getGuiPanel() {
 		return (GUIpanel)(window.panel("guiPanel").target());
 	}
@@ -76,11 +90,14 @@ public class GUITest  {
 	public void testRetrieveAllGridsWhenOK() throws IOException {
 		int expected=5;
 		retrieveAllGrids(expected);
+		assertRetrieving(5);
+	}
+	private void assertRetrieving(int expected) throws IOException {
 		verify(cl,times(1)).getAllTables();
 		@SuppressWarnings("unchecked")
 		JComboBox<String> target=window.comboBox("gridCombo").target();
 		int size=target.getItemCount();
-		assertEquals(5,size);
+		assertEquals(expected,size);
 		window.label("lblOutput").requireText(GUI.OPERATION_OK);
 		for(int i=0; i<size;i++) {
 			assertEquals(""+i,target.getItemAt(i));
@@ -105,6 +122,17 @@ public class GUITest  {
 		window.label("lblOutput").requireText(GUI.SERVER_ERROR);
 	}
 	
+	@Test
+	public void testRetrieveAllGridsWhenEmpty() throws IOException {
+		retrieveAllGrids(0);
+		assertRetrieving(0);
+	}
+	@Test
+	public void testRetrieveAllGridsWhenSingle() throws IOException {
+		retrieveAllGrids(1);
+		assertRetrieving(1);
+		
+	}
 	private void retrieveAllGrids(int expected) throws IOException {
 		String[] array=new String[expected];
 		for(int i=0; i<expected;i++) {
@@ -267,7 +295,7 @@ public class GUITest  {
 		verify(cl,times(1)).getShortestPath(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
 	}
 	@Test
-	public void requestShortestPathWhenServerCannotFindSourceNode() throws IOException {
+	public void testRequestShortestPathWhenServerCannotFindSourceNode() throws IOException {
 		requestAGrid(0);
 		window.comboBox("actionsCombo").selectItem(2);
 		window.textBox("sourceField").setText("test");
@@ -280,7 +308,7 @@ public class GUITest  {
 	}
 	
 	@Test
-	public void requestShortestPathOK() throws  IOException {
+	public void testRequestShortestPathOK() throws  IOException {
 		shortestPathOkScenario();
 		window.label("lblOutput").requireText(GUI.OPERATION_OK);
 		verify(cl,times(1)).getShortestPath(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
@@ -299,7 +327,49 @@ public class GUITest  {
 		
 		
 	}
-	
+	@Test
+	public void testRequestShortestPathWhenEmptyListIsReturned() throws IOException {
+		requestAGrid(0);
+		setExpectedShortestPath(new ArrayList<String>());
+		verify(cl,times(1)).getShortestPath(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+		window.label("lblOutput").requireText("No paths found from source node to sink");
+		GUIpanel pan=getGuiPanel();
+		assertEquals(Color.RED,pan.getColorInPoint(0, 0));
+		assertEquals(Color.BLACK,pan.getColorInPoint(0, 1));
+		assertEquals(Color.BLACK,pan.getColorInPoint(0, 2));
+		assertEquals(Color.RED,pan.getColorInPoint(1, 0));
+		assertEquals(Color.RED,pan.getColorInPoint(1, 1));
+		assertEquals(Color.BLACK,pan.getColorInPoint(1, 2));
+		assertEquals(Color.RED,pan.getColorInPoint(2, 0));
+		assertEquals(Color.RED,pan.getColorInPoint(2, 1));
+		assertEquals(Color.RED,pan.getColorInPoint(2, 2));
+	}
+	private void setExpectedShortestPath(List<String> toreturn) throws IOException {
+		window.comboBox("actionsCombo").selectItem(2);
+		window.textBox("sourceField").setText("0_0");
+		window.textBox("sinkField").setText("2_0");
+		when(cl.getShortestPath(Mockito.eq("0_0"),Mockito.eq("2_0") , Mockito.anyString())).thenReturn(toreturn);
+		window.button("btnPerform").click();
+	}
+	@Test
+	public void testRequestShortestPathWhenSingleListIsReturned() throws IOException {
+		requestAGrid(0);
+		setExpectedShortestPath(Arrays.asList("0_0"));
+		verify(cl,times(1)).getShortestPath(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+		window.label("lblOutput").requireText(GUI.OPERATION_OK);
+		GUIpanel pan=getGuiPanel();
+		assertEquals(GUIpanel.DARKGREEN,pan.getColorInPoint(0, 0));
+		assertEquals(Color.BLACK,pan.getColorInPoint(0, 1));
+		assertEquals(Color.BLACK,pan.getColorInPoint(0, 2));
+		assertEquals(Color.RED,pan.getColorInPoint(1, 0));
+		assertEquals(Color.RED,pan.getColorInPoint(1, 1));
+		assertEquals(Color.BLACK,pan.getColorInPoint(1, 2));
+		assertEquals(Color.RED,pan.getColorInPoint(2, 0));
+		assertEquals(Color.RED,pan.getColorInPoint(2, 1));
+		assertEquals(Color.RED,pan.getColorInPoint(2, 2));
+		
+		
+	}
 	@Test
 	public void testReset() throws IOException {
 		shortestPathOkScenario();

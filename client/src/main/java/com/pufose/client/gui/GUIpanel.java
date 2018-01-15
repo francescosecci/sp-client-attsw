@@ -24,9 +24,9 @@ public class GUIpanel extends JPanel {
 	private int distance;
 	public static final Color DARKGREEN=Color.decode("#0e7810");
 	public GUIpanel(int maxSize) {
-		setPreferredSize(new Dimension(1024/2,300));
-		setMinimumSize(new Dimension(1024/2,300));
-		setSize(new Dimension(1024/2,300));
+		setPreferredSize(new Dimension(512,512));
+		setMinimumSize(new Dimension(512,512));
+		setSize(new Dimension(512,512));
 		gridSize=maxSize;
 		this.distance=(int)(8*Math.sqrt(maxSize));
 		setBackground(Color.WHITE);

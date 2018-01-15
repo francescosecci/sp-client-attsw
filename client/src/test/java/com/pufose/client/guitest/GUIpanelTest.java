@@ -57,7 +57,7 @@ public class GUIpanelTest {
 		Dimension pref=pan.getPreferredSize();
 		Dimension min=pan.getMinimumSize();
 		Dimension size=pan.getSize();
-		Dimension expected=new Dimension(1024/2,300);
+		Dimension expected=new Dimension(512,512);
 
 		assertEquals(pan.getWidth()/2-(GRIDSIZE*pan.getDistance()/4),pan.getOffsetX());
 		assertEquals(pan.getHeight()/2-(GRIDSIZE*pan.getDistance()/4),pan.getOffsetY());

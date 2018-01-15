@@ -70,6 +70,7 @@ public class GUI extends JFrame {
 
 	private void alert(String message) {
 		lblout.setText(message);
+		pack();
 	}
 
 	public void resetPane() {
@@ -81,9 +82,9 @@ public class GUI extends JFrame {
 	private void createConnection() {
 		String prefix = "http://" + server.getText() + ":" + port.getText();
 		String urltoall = prefix + urlToAll.getText();
-
 		RestServiceClient rsc = (new RestServiceClient(urltoall));
 		cl.setRestServiceClient(rsc);
+		alert(OPERATION_OK);
 		connCreated = true;
 	}
 
@@ -327,6 +328,10 @@ public class GUI extends JFrame {
 		this.cl = mock;
 		connCreated = (mock != null);
 
+	}
+
+	public IClient getClient() {
+		return this.cl;
 	}
 
 }

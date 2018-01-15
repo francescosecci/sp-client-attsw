@@ -57,10 +57,51 @@ public class RestServiceClient implements IRestServiceClient {
 	private HttpURLConnection getConnection(String url) throws IOException {
 		HttpURLConnection connection;
 		connection = createConnection(url);
+		connection.setConnectTimeout(2000);
 		this.resp = connection.getResponseCode();
 		return connection;
 		
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + resp;
+		result = prime * result + ((urlToAll == null) ? 0 : urlToAll.hashCode());
+		result = prime * result + ((urlToGrid == null) ? 0 : urlToGrid.hashCode());
+		result = prime * result + ((urlToPath == null) ? 0 : urlToPath.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RestServiceClient other = (RestServiceClient) obj;
+		if (resp != other.resp)
+			return false;
+		if (urlToAll == null) {
+			if (other.urlToAll != null)
+				return false;
+		} else if (!urlToAll.equals(other.urlToAll))
+			return false;
+		if (urlToGrid == null) {
+			if (other.urlToGrid != null)
+				return false;
+		} else if (!urlToGrid.equals(other.urlToGrid))
+			return false;
+		if (urlToPath == null) {
+			if (other.urlToPath != null)
+				return false;
+		} else if (!urlToPath.equals(other.urlToPath))
+			return false;
+		return true;
+	}
+
 	private HttpURLConnection createConnection(String url) throws IOException {
 		URL uurl = new URL(url);
    	    return (HttpURLConnection)uurl.openConnection();
