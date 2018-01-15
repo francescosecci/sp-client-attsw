@@ -1,7 +1,7 @@
 package com.pufose.client;
 
 
-import org.assertj.swing.edt.GuiActionRunner;
+import java.awt.EventQueue;
 
 import com.pufose.client.gui.GUI;
 
@@ -13,6 +13,6 @@ public class App
 {
     public static void main( String[] args )
     {
-    	GuiActionRunner.execute(()-> new GUI());
+    	EventQueue.invokeLater(()-> new GUI());
     }
 }
