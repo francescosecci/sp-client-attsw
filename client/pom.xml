@@ -201,8 +201,8 @@
 						<configuration>
 							<!-- Sets the VM argument line used when unit tests are run. -->
 							<excludes>
-								<exclude>**/GUIpanelTest.*</exclude>
-								<exclude>**/GUITest.*</exclude>
+								<exclude>**/guitest/GUIpanelTest.*</exclude>
+								<exclude>**/guitest/GUITest.*</exclude>
 							</excludes>
 							<argLine>${surefireArgLine}</argLine>
 						</configuration>
@@ -212,8 +212,8 @@
 						<artifactId>maven-failsafe-plugin</artifactId>
 						<configuration>
 							<includes>
-								<include>**/GUIpanelTest.*</include>
-								<include>**/GUITest.*</include>
+								<include>**/guitest/GUIpanelTest.*</include>
+								<include>**/guitest/GUITest.*</include>
 							</includes>
 							<excludes>
 								<exclude>**/*IT.**</exclude>
@@ -269,8 +269,8 @@
 								<include>**/*IT.*</include>
 							</includes>
 							<excludes>
-								<exclude>**/GUIpanelTest.*</exclude>
-								<exclude>**/GUITest.*</exclude>
+								<exclude>**/guitest/GUIpanelTest.*</exclude>
+								<exclude>**/guitest/GUITest.*</exclude>
 							</excludes>
 						</configuration>
 						<executions>
