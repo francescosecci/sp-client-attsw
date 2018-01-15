@@ -64,6 +64,7 @@ public class RestServiceClient implements IRestServiceClient {
 	}
 	@Override
 	public int hashCode() {
+		// $COVERAGE-IGNORE$
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + resp;
@@ -76,6 +77,7 @@ public class RestServiceClient implements IRestServiceClient {
 	
 	@Override
 	public boolean equals(Object obj) {
+		// $COVERAGE-IGNORE$
 		if (this == obj)
 			return true;
 		if (obj == null)
