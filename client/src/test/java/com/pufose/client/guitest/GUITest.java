@@ -1,7 +1,6 @@
 package com.pufose.client.guitest;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -23,7 +22,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+
 import com.pufose.client.GridFromServer;
 import com.pufose.client.IClient;
 import com.pufose.client.RestServiceClient;
@@ -74,7 +75,12 @@ public class GUITest  {
 		RestServiceClient expected = (new RestServiceClient(urltoall));
 		window.button("btnCreateConn").click();
 		window.label("lblOutput").requireText(GUI.OPERATION_OK);
-		verify(cl).setRestServiceClient(eq(expected));
+		ArgumentCaptor<RestServiceClient> captor = ArgumentCaptor.forClass(RestServiceClient.class);
+		verify(cl).setRestServiceClient(captor.capture());
+		RestServiceClient actual=captor.getValue();
+		assertEquals(expected.getUrlToAll(),actual.getUrlToAll());
+		assertEquals(expected.getUrlToGrid(),actual.getUrlToGrid());
+		assertEquals(expected.getUrlToPath(),actual.getUrlToPath());
 
 		
 	}

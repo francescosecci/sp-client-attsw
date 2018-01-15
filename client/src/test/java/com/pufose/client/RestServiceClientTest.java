@@ -41,7 +41,12 @@ public class RestServiceClientTest {
 		              .withHeader("Content-Type", "application/json")
 		              .withBody(body)));
 	}
-	
+	@Test
+	public void testConstructorOk() {
+		assertEquals("http://localhost:8000/api/",fixture.getUrlToAll());
+		assertEquals("http://localhost:8000/api/grid",fixture.getUrlToGrid());
+		assertEquals("http://localhost:8000/api/path",fixture.getUrlToAll());
+	}
 	@Test(expected=IllegalArgumentException.class)
 	public void testDoGetWhenWrongRequest() throws IOException {
 		fixture.doGet(-1, null);
