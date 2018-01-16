@@ -9,8 +9,8 @@ addons:
 
 jdk:
   - oraclejdk8
-#os:
- # - osx
+os:
+  - osx
   
 env:
   - DISPLAY=:99.0
