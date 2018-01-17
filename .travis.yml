@@ -11,7 +11,8 @@ jdk:
   - oraclejdk8
 os:
   - linux
-  - osx
+  - os: osx
+      osx_image: xcode8
   
 env:
   - DISPLAY=:99.0
