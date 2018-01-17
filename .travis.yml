@@ -10,14 +10,10 @@ addons:
 jdk:
   - oraclejdk8
 
-matrix:
-  include:
-    - os: linux
-    
-    - os: osx
-      osx_image: xcode8
-
-
+os:
+  - linux
+  - osx
+     
 env:
   - DISPLAY=:99.0
   
