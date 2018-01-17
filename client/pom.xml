@@ -23,9 +23,9 @@
 			**/GridFromServer.*,
 			**/IClient.*,
 			**/IRestServiceClient.*,
-			**/guitest/GUI.*,
-			**/guitest/GUIpanel.*,
-			**/guitest/GraphBuilder.*
+			**/gui/GUI.*,
+			**/gui/GUIpanel.*,
+			**/gui/GraphBuilder.*
 		</sonar.coverage.exclusions>
 	</properties>
 
@@ -142,9 +142,9 @@
 								<exclude>**/IClient.*</exclude>
 								<exclude>**/IRestServiceClient.*</exclude>
 								<exclude>**/GridFromServer.*</exclude>
-								<exclude>**/guitest/GUI.*</exclude>
-								<exclude>**/guitest/GUIpanel.*</exclude>
-								<exclude>**/guitest/GraphBuilder.*</exclude>
+								<exclude>**/gui/GUI.*</exclude>
+								<exclude>**/gui/GUIpanel.*</exclude>
+								<exclude>**/gui/GraphBuilder.*</exclude>
 							</excludes>
 						</configuration>
 						<executions>
@@ -187,8 +187,8 @@
 						<configuration>
 							<!-- Sets the VM argument line used when unit tests are run. -->
 							<excludes>
-								<exclude>**/guitest/GUIpanelTest.*</exclude>
-								<exclude>**/guitest/GUITest.*</exclude>
+								<exclude>**/gui/GUIpanelTest.*</exclude>
+								<exclude>**/gui/GUITest.*</exclude>
 							</excludes>
 							<argLine>${surefireArgLine}</argLine>
 						</configuration>
