@@ -32,7 +32,7 @@ import com.pufose.client.gui.GUI;
 import com.pufose.client.gui.GUIpanel;
 
 @RunWith(JUnit4.class)
-public class GUITest  {
+public class GUITestIT  {
 	private FrameFixture window;
 	private IClient cl;
 	private GUI frame;
