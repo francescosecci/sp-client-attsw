@@ -139,7 +139,12 @@ public class GUIUnitTest  {
 		verify(cl,times(0)).getShortestPath(anyString(),anyString(),anyString());
 		assertEquals(Arrays.asList(), path);
 	}
-	
+	@Test
+	public void testGetShortestPathWhenMissingWhere() throws IOException {
+		List<String> path=frame.caseRequestPath("from","to",null);
+		verify(cl,times(0)).getShortestPath(anyString(),anyString(),anyString());
+		assertEquals(Arrays.asList(), path);
+	}
 	@Test
 	public void testGetShortestPathWhenOKEmptyList() throws IOException {
 		assertExpectedPath(Arrays.asList(""));
