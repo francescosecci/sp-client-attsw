@@ -26,11 +26,12 @@ public class GUIUnitTest  {
 
 	private IClient cl;
 	private GUI frame;
+	private GUIpanel pan;
 	@Before
 	public void setUp() throws AWTException {
 		frame = GUI.createGui(true);
 		frame.mockClient(cl=Mockito.mock(IClient.class));
-		frame.mockPane(Mockito.spy(new GUIpanel(10)));
+		frame.mockPane(pan=Mockito.spy(new GUIpanel(10)));
 		frame.setGridEnabled(true);
 		frame.setPathEnabled(true);
 		
@@ -51,7 +52,24 @@ public class GUIUnitTest  {
 
 		
 	}
-
+	@Test(expected=NullPointerException.class)
+	public void testSetNullClientRequestAll() {
+		frame.mockClient(null);
+		frame.caseRequestGrid("");
+		
+	}
+	@Test(expected=NullPointerException.class)
+	public void testSetNullClientRequestPath() {
+		frame.mockClient(null);
+		frame.requestAll();
+		
+	}
+	@Test(expected=NullPointerException.class)
+	public void testSetNullClientRequestGrid() {
+		frame.mockClient(null);
+		frame.caseRequestPath("","","");
+		
+	}
 	@Test
 	public void testRetrieveAllGridsWhenEmptyList() throws IOException {
 		when(cl.getAllTables()).thenReturn(Arrays.asList());
@@ -164,7 +182,11 @@ public class GUIUnitTest  {
 		GridFromServer grid=frame.caseRequestGrid("");
 		assertNull(grid);
 	}
-	
+	@Test
+	public void testResetPane() {
+		frame.resetPane();
+		verify(pan,times(1)).reset();
+	}
 	private void assertExpectedPath(List<String> expected) throws IOException {
 
 		when(cl.getShortestPath("0_0","0_1","1")).thenReturn(expected);
