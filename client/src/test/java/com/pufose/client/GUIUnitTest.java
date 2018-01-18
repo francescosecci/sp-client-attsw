@@ -159,11 +159,24 @@ public class GUIUnitTest  {
 		assertExpectedPath(Arrays.asList("1","2"));
 		
 	}
+	@Test
+	public void testGetShortestPathWhenIOException() throws IOException {
+		assertExpectedPathException(new IOException());
+	}
+	@Test
+	public void testGetShortestPathWhenNullPointerException() throws IOException {
+		assertExpectedPathException(new NullPointerException());
+	}
 	private void assertExpectedPath(List<String> expected) throws IOException {
 		when(cl.getShortestPath("from", "to", "where")).thenReturn(expected);
 		List<String> path=frame.caseRequestPath("from","to","where");
 		verify(cl,times(1)).getShortestPath("from", "to", "where");
 		assertEquals(expected, path);
+	}
+	private void assertExpectedPathException(Exception e) throws IOException {
+		when(cl.getShortestPath("from", "to", "where")).thenThrow(e);
+		List<String> path=frame.caseRequestPath("from","to","where");
+		assertEquals(Arrays.asList(), path);
 	}
 	
 
