@@ -13,6 +13,6 @@ public class App
 {
     public static void main( String[] args )
     {
-    	EventQueue.invokeLater(()-> new GUI());
+    	EventQueue.invokeLater(()-> GUI.createGui(false));
     }
 }
