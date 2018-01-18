@@ -2,6 +2,7 @@ package com.pufose.client;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -52,22 +53,22 @@ public class GUIUnitTest  {
 
 		
 	}
-	@Test(expected=NullPointerException.class)
-	public void testSetNullClientRequestAll() {
-		frame.mockClient(null);
-		frame.caseRequestGrid("");
-		
-	}
-	@Test(expected=NullPointerException.class)
-	public void testSetNullClientRequestPath() {
-		frame.mockClient(null);
-		frame.requestAll();
-		
-	}
-	@Test(expected=NullPointerException.class)
+	@Test
 	public void testSetNullClientRequestGrid() {
 		frame.mockClient(null);
-		frame.caseRequestPath("","","");
+		assertNull(frame.caseRequestGrid(""));
+		
+	}
+	@Test
+	public void testSetNullClientRequestAll() {
+		frame.mockClient(null);
+		assertTrue(frame.requestAll().isEmpty());
+		
+	}
+	@Test
+	public void testSetNullClientRequestPath() {
+		frame.mockClient(null);
+		assertTrue(frame.caseRequestPath("","","").isEmpty());
 		
 	}
 	@Test
