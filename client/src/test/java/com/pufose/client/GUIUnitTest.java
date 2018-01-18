@@ -25,14 +25,14 @@ import com.pufose.client.gui.GUIpanel;
 public class GUIUnitTest  {
 
 	private IClient cl;
-	private GUIpanel pan;
 	private GUI frame;
 	@Before
 	public void setUp() throws AWTException {
 		frame = GUI.createGui(true);
 		frame.mockClient(cl=Mockito.mock(IClient.class));
-		frame.mockPane(pan=Mockito.spy(new GUIpanel(10)));
-		frame.allMocked();
+		frame.mockPane(Mockito.spy(new GUIpanel(10)));
+		frame.setGridEnabled(true);
+		frame.setPathEnabled(true);
 		
 	}
 	
@@ -101,7 +101,7 @@ public class GUIUnitTest  {
 		throwWhenRetrieveGrid(new NullPointerException());
 		
 	}
-
+	
 	@Test
 	public void testRetrieveOneGridWhenOk() throws IOException {
 		when(cl.retrieveGrid("1")).thenReturn(new GridFromServer(1));
@@ -153,6 +153,18 @@ public class GUIUnitTest  {
 	public void testGetShortestPathWhenNullPointerException() throws IOException {
 		assertExpectedPathException(new NullPointerException());
 	}
+	@Test
+	public void testGetShortestPathWhenNotEnabled() throws IOException {
+		frame.setPathEnabled(false);
+		assertExpectedPath(Arrays.asList());
+	}
+	@Test
+	public void testGetGridWhenNotEnabled() throws IOException {
+		frame.setGridEnabled(false);
+		GridFromServer grid=frame.caseRequestGrid("");
+		assertNull(grid);
+	}
+	
 	private void assertExpectedPath(List<String> expected) throws IOException {
 
 		when(cl.getShortestPath("0_0","0_1","1")).thenReturn(expected);

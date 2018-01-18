@@ -136,7 +136,7 @@ public class GUI {
 		GridFromServer grid;
 		try {
 			grid = cl.retrieveGrid("" + id);
-			GraphBuilder.makeGraph(grid, panel);
+			GraphBuilder.instance.makeGraph(grid, panel);
 			comboCity.setEnabled(false);
 			pathEnabled = true;
 			alert(OPERATION_OK);
@@ -346,10 +346,13 @@ public class GUI {
 		return this.window;
 	}
 
-	public void allMocked() {
-		this.gridEnabled = true;
-		this.pathEnabled = true;
+	public void setGridEnabled(boolean b) {
+		this.gridEnabled=b;
+	}
 
+	public void setPathEnabled(boolean b) {
+		this.pathEnabled=b;
+		
 	}
 
 }

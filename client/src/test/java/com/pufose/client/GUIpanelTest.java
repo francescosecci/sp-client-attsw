@@ -3,6 +3,7 @@ package com.pufose.client;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -167,7 +168,7 @@ public class GUIpanelTest {
 	public void testGraphBuilderWhenGraphIsEmpty() {
 		int[][] matrix=createMatrix(0,0);
 		GridFromServer fixture=new GridFromServer(matrix,0);
-		GraphBuilder.makeGraph(fixture, pan);
+		GraphBuilder.instance.makeGraph(fixture, pan);
 		allHiddenProcedure(0,0);
 	}
 	@Test 
@@ -179,7 +180,7 @@ public class GUIpanelTest {
 		int[][]matrix=createMatrix(1,1);
 		matrix[0][0]=value_in_matrix;
 		GridFromServer fixture=new GridFromServer(matrix,0);
-		GraphBuilder.makeGraph(fixture, pan);
+		GraphBuilder.instance.makeGraph(fixture, pan);
 		
 	}
 	@Test
@@ -190,7 +191,7 @@ public class GUIpanelTest {
 	}
 	@Test
 	public void testGraphBuilderWhenNotSquareMatrixAndRowsGTCol() {
-		GraphBuilder.makeGraph(new GridFromServer(createMatrix(3,1),0), pan);
+		GraphBuilder.instance.makeGraph(new GridFromServer(createMatrix(3,1),0), pan);
 		for(int i=0; i<2;i++) {
 			for(int j=0; j<2;j++) {
 				assertColorInPoint(Color.BLACK,i,j);
@@ -208,8 +209,15 @@ public class GUIpanelTest {
 		assertEquals("",pan.getPrintedNameIn(i, j));
 	}
 	@Test
+	public void testClonedLocations() {
+		Point[][] loc=pan.getAllLocations();
+		Point[][] loc2=pan.getAllLocations();
+		assertTrue(Arrays.deepEquals(loc, loc2));
+		assertTrue(loc!=loc2);
+	}
+	@Test
 	public void testGraphBuilderWhenNotSquareMatrixAndColGTRows() {
-		GraphBuilder.makeGraph(new GridFromServer(createMatrix(7,10),0), pan);
+		GraphBuilder.instance.makeGraph(new GridFromServer(createMatrix(7,10),0), pan);
 		for(int i=0; i<7;i++) {
 			for(int j=0; j<7;j++) {
 				assertColorInPoint(Color.BLACK,i,j);
@@ -227,7 +235,7 @@ public class GUIpanelTest {
 			{1,1,0,1}
 		};
 		GridFromServer fixture=new GridFromServer(matrix,0);
-		GraphBuilder.makeGraph(fixture, pan);
+		GraphBuilder.instance.makeGraph(fixture, pan);
 		for(int i=0; i<4;i++) {
 			for(int j=0; j<4;j++) {
 				if(matrix[i][j]==1) {
