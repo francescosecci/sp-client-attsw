@@ -4,7 +4,8 @@ import com.pufose.client.GridFromServer;
 
 public class GraphBuilder {
 	private GraphBuilder() {}
-	public static void makeGraph(GridFromServer mat, GUIpanel p) {
+	public static final GraphBuilder instance=new GraphBuilder();
+	public void makeGraph(GridFromServer mat, GUIpanel p) {
 		int n=mat.getN();
 		for(int i=0; i<n;i++)
 		{
