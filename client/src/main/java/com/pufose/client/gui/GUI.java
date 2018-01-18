@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,9 +51,9 @@ public class GUI {
 	public static final String SERVER_ERROR = "Error, server cannot perform operation";
 	public static final String NO_CONNECTOR = "Error, you must create a connector before";
 
-	public GUI() {
+	private GUI(boolean hidden) {
 		window = new JFrame("Shortest Path Client - ATTSW Project 17-18");
-		initializeGui();
+		initializeGui(hidden);
 		initializeLocalFields();
 
 	}
@@ -62,10 +63,10 @@ public class GUI {
 		gridEnabled = pathEnabled = connCreated = false;
 	}
 
-	private void initializeGui() {
+	private void initializeGui(boolean hidden) {
 		createWidgets();
 		addWidgetsToFrame();
-		graphicalAdjustements();
+		graphicalAdjustements(hidden);
 		createEvents();
 	}
 
@@ -74,14 +75,18 @@ public class GUI {
 		window.pack();
 	}
 
+	public void mockPane(GUIpanel pan) {
+		this.panel = pan;
+	}
+
 	public void resetPane() {
 		panel.reset();
 		pathEnabled = false;
 		comboCity.setEnabled(true);
 	}
 
-	private void createConnection() {
-		String prefix = "http://" + server.getText() + ":" + port.getText();
+	public void createConnection(String host, String port) {
+		String prefix = "http://" + host + ":" + port;
 		String urltoall = prefix + urlToAll.getText();
 		RestServiceClient rsc = (new RestServiceClient(urltoall));
 		cl.setRestServiceClient(rsc);
@@ -89,131 +94,140 @@ public class GUI {
 		connCreated = true;
 	}
 
-	private void requestPath() {
-		String from = txtsource.getText();
+	private List<String> requestPath(String from, String to, String where) {
+		List<String> res = new ArrayList<>();
 		if (from.length() == 0) {
 			alert("Insert source node");
-			return;
-		}
-		String to = txtsink.getText();
-		if (to.length() == 0) {
-			alert("Insert sink node");
-			return;
-		}
-		try {
-			tryToHighlightPath(from, to);
-		} catch (IOException e) {
-			alert(SERVER_ERROR);
-		} catch (NullPointerException e) {
-			alert(NO_CONNECTOR);
+
 		}
 
+		else if (to.length() == 0) {
+			alert("Insert sink node");
+
+		} else {
+			try {
+				res = tryToHighlightPath(from, to,where);
+			} catch (IOException e) {
+				alert(SERVER_ERROR);
+			} catch (NullPointerException e) {
+				alert(NO_CONNECTOR);
+			}
+		}
+		return res;
 	}
 
-	private void tryToHighlightPath(String from, String to) throws IOException {
+	private List<String> tryToHighlightPath(String from, String to, String where) throws IOException {
 		panel.highlightPath(null);
-		List<String> minPath = cl.getShortestPath(from, to, (String) comboCity.getSelectedItem());
+		List<String> minPath = cl.getShortestPath(from, to, where);
+		
 		if (minPath.isEmpty()) {
 			alert("No paths found from source node to sink");
 		} else {
 			alert(OPERATION_OK);
 			panel.highlightPath(minPath);
 		}
+		return minPath;
 
 	}
 
-	private void requestGrid() {
+	private GridFromServer requestGrid(String id) {
 
 		panel.reset();
 		GridFromServer grid;
 		try {
-			grid = cl.retrieveGrid((String) comboCity.getSelectedItem());
+			grid = cl.retrieveGrid("" + id);
 			GraphBuilder.makeGraph(grid, panel);
 			comboCity.setEnabled(false);
 			pathEnabled = true;
 			alert(OPERATION_OK);
+			return grid;
 		} catch (IOException e) {
 			alert(SERVER_ERROR);
+			return null;
 		} catch (NullPointerException e) {
 			alert(NO_CONNECTOR);
+			return null;
 		}
 
 	}
 
-	private void requestAll() {
+	public List<String> requestAll() {
 
 		try {
-			tryToGetAllTables();
+			List<String> all = tryToGetAllTables();
 			alert(OPERATION_OK);
 			gridEnabled = true;
+			return all;
 		} catch (IOException e) {
 			alert(SERVER_ERROR);
+			return new ArrayList<>();
 		} catch (NullPointerException e) {
 			alert(NO_CONNECTOR);
+			return new ArrayList<>();
 		}
 
 	}
 
-	private void tryToGetAllTables() throws IOException {
+	private List<String> tryToGetAllTables() throws IOException {
 		List<String> cities = cl.getAllTables();
 		comboCity.removeAllItems();
 		for (String e : cities) {
 			comboCity.addItem(e);
 		}
+		return cities;
 	}
 
 	private void createEvents() {
 
-		reset.addActionListener((ActionEvent arg0)->resetPane());
-		createConnector.addActionListener((ActionEvent arg0)->createConnection());
+		reset.addActionListener((ActionEvent arg0) -> resetPane());
+		createConnector.addActionListener((ActionEvent arg0) -> createConnection(server.getText(), port.getText()));
 		perform.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(!connCreated) {
+				if (!connCreated) {
 					alert(NO_CONNECTOR);
 					return;
 				}
 				if (actions.getSelectedIndex() == 0) {
 					requestAll();
 				} else if (actions.getSelectedIndex() == 1) {
-					caseRequestGrid();
+					caseRequestGrid((String) comboCity.getSelectedItem());
 				} else if (actions.getSelectedIndex() == 2) {
-					caseRequestPath();
+					caseRequestPath(txtsource.getText(), txtsink.getText(), (String) comboCity.getSelectedItem());
 				}
 
-			}
-
-			private void caseRequestPath() {
-				if (!pathEnabled) {
-					alert("Error, you must retrieve a grid first");
-				}
-				else
-				{
-					requestPath();
-					txtsource.setText("");
-					txtsink.setText("");
-				}
-			}
-
-			private void caseRequestGrid() {
-				if (!gridEnabled ) {
-					alert("Error, you must retrieve all grids first");
-				}
-				else 
-				{
-					requestGrid();
-				}
 			}
 
 		});
 	}
 
-	private void graphicalAdjustements() {
+	public List<String> caseRequestPath(String from, String to, String where) {
+		if (!pathEnabled) {
+			alert("Error, you must retrieve a grid first");
+			return new ArrayList<>();
+		} else {
+			txtsource.setText("");
+			txtsink.setText("");
+			return requestPath(from, to, where);
+
+		}
+	}
+
+	public GridFromServer caseRequestGrid(String id) {
+		if (!gridEnabled) {
+			alert("Error, you must retrieve all grids first");
+			return null;
+		} else {
+			return requestGrid(id);
+		}
+	}
+
+	private void graphicalAdjustements(boolean hidden) {
 		window.setLocation(0, 0);
 		window.pack();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setVisible(true);
+		window.setVisible(!hidden);
 		initFields();
 		lblout.setFont(new Font("", Font.BOLD, 16));
 		lblout.setForeground(Color.BLUE);
@@ -314,8 +328,8 @@ public class GUI {
 		panel.setName("guiPanel");
 	}
 
-	public static GUI createGui() {
-		return new GUI();
+	public static GUI createGui(boolean hidden) {
+		return new GUI(hidden);
 	}
 
 	public void mockClient(IClient mock) {
@@ -330,6 +344,12 @@ public class GUI {
 
 	public JFrame getFrame() {
 		return this.window;
+	}
+
+	public void allMocked() {
+		this.gridEnabled = true;
+		this.pathEnabled = true;
+
 	}
 
 }
