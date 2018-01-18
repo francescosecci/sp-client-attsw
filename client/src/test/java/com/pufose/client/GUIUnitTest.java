@@ -2,24 +2,15 @@ package com.pufose.client;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.awt.AWTException;
-import java.awt.Color;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.JComboBox;
-
-import org.assertj.swing.edt.GuiActionRunner;
-import org.assertj.swing.fixture.FrameFixture;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,9 +18,6 @@ import org.junit.runners.JUnit4;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import com.pufose.client.GridFromServer;
-import com.pufose.client.IClient;
-import com.pufose.client.RestServiceClient;
 import com.pufose.client.gui.GUI;
 import com.pufose.client.gui.GUIpanel;
 
@@ -43,7 +31,8 @@ public class GUIUnitTest  {
 	public void setUp() throws AWTException {
 		frame = GUI.createGui(true);
 		frame.mockClient(cl=Mockito.mock(IClient.class));
-		frame.mockPane(Mockito.spy(new GUIpanel(10)));
+		frame.mockPane(pan=Mockito.spy(new GUIpanel(10)));
+		frame.allMocked();
 		
 	}
 	
@@ -129,34 +118,31 @@ public class GUIUnitTest  {
 	
 	@Test
 	public void testGetShortestPathWhenMissingSink() throws IOException {
-		List<String> path=frame.caseRequestPath("from",null,"where");
-		verify(cl,times(0)).getShortestPath(anyString(),anyString(),anyString());
+		List<String> path=frame.caseRequestPath("0_0","","1");
 		assertEquals(Arrays.asList(), path);
 	}
 	@Test
 	public void testGetShortestPathWhenMissingSource() throws IOException {
-		List<String> path=frame.caseRequestPath(null,"to","where");
-		verify(cl,times(0)).getShortestPath(anyString(),anyString(),anyString());
+		List<String> path=frame.caseRequestPath("","0_1","1");
 		assertEquals(Arrays.asList(), path);
 	}
 	@Test
 	public void testGetShortestPathWhenMissingWhere() throws IOException {
-		List<String> path=frame.caseRequestPath("from","to",null);
-		verify(cl,times(0)).getShortestPath(anyString(),anyString(),anyString());
+		List<String> path=frame.caseRequestPath("0_0","0_1","");
 		assertEquals(Arrays.asList(), path);
 	}
 	@Test
 	public void testGetShortestPathWhenOKEmptyList() throws IOException {
-		assertExpectedPath(Arrays.asList(""));
+		assertExpectedPath(Arrays.asList());
 	}
 	
 	@Test
 	public void testGetShortestPathWhenOKSingleList() throws IOException {
-		assertExpectedPath(Arrays.asList("1"));
+		assertExpectedPath(Arrays.asList("0_0"));
 	}
 	@Test
 	public void testGetShortestPathWhenOKNormalList() throws IOException {
-		assertExpectedPath(Arrays.asList("1","2"));
+		assertExpectedPath(Arrays.asList("0_0","0_1"));
 		
 	}
 	@Test
@@ -168,14 +154,14 @@ public class GUIUnitTest  {
 		assertExpectedPathException(new NullPointerException());
 	}
 	private void assertExpectedPath(List<String> expected) throws IOException {
-		when(cl.getShortestPath("from", "to", "where")).thenReturn(expected);
-		List<String> path=frame.caseRequestPath("from","to","where");
-		verify(cl,times(1)).getShortestPath("from", "to", "where");
+
+		when(cl.getShortestPath("0_0","0_1","1")).thenReturn(expected);
+		List<String> path=frame.caseRequestPath("0_0","0_1","1");
 		assertEquals(expected, path);
 	}
 	private void assertExpectedPathException(Exception e) throws IOException {
-		when(cl.getShortestPath("from", "to", "where")).thenThrow(e);
-		List<String> path=frame.caseRequestPath("from","to","where");
+		when(cl.getShortestPath("0_0","0_1","1")).thenThrow(e);
+		List<String> path=frame.caseRequestPath("0_0","0_1","1");
 		assertEquals(Arrays.asList(), path);
 	}
 	
