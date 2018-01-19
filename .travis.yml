@@ -8,7 +8,10 @@ addons:
       secure: "Gj1HcyuVch3iX+kqsuW8J1PH0CvwItSP5bvWzwuMvSAZYDQWSGUv0e8u2s4eUohicRDC3f0D5th8t4WtG1BxXAmbt/vWdg0CZdyGz+UvxuW6ad3ZxACbWq/ePa60G9MZxB/J/LCmBfNYolZ0UipdWBeQvRiKAClJNZxHhurX26uDrHdGTemqHL0v5Wzj5aempfWAhsnVcg1wKCDwq7+MIaSyV85W3KQwqrrE+FxRZfMpRj36O/KoErad25A0ooVQByPo0Tq78VruKla9xDK4Vw+zJLwe39MQsNu9i/f624EQxJRE4LcJ0l0M0reU2uGVaW43nLjbtjBKTFO5wDd4j1zcKfwA7RtmW6r69zmtXM8QC/VWpJEYtI47zUqWRtLVMDDUys0BgQadDP0YVTxHoSbCwalDRiP65BpLZa244KszgBUmYXPFVVPSYiyjnOrPEf6rqKMEpjDAcw/F2AFUbEW++PZY5nmgxLQ3kCdZqGEU/r2NNAN4ZXK0ku0Mt3y75cisQwk/uQ9Z4mCEg97Zc3Tdr7zy3mqAm20s/hfDbjW5uW2p3sgjZ9eMyc/E5adLjwJRIzNicKXXgqxzRr+cZBhL2yv5yGiO6FUtVzUqCIFrcq5WKD3PwC8yxqnqD4sETGYCSuN34gsdkGltBscwHFVlmGFfA/v0cCJBQ4cXsdg="
 os:
   - linux
-  - osx
+
+jdk:
+  - oraclejdk8
+  - oraclejdk9
      
 env:
   - DISPLAY=:99.0
