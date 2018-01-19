@@ -11,7 +11,6 @@ os:
 
 jdk:
   - oraclejdk8
-  - oraclejdk9
      
 env:
   - DISPLAY=:99.0
