@@ -17,7 +17,10 @@ env:
   - DISPLAY=:99.0
   
 before_install:
-  - sh -e /etc/init.d/xvfb start
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
+      sh -e /etc/init.d/xvfb start     
+    fi
+
 
 script:
  - mvn -f client/pom.xml clean verify -Pjacoco coveralls:report
