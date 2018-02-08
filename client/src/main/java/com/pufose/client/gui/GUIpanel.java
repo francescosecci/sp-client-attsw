@@ -144,11 +144,12 @@ public class GUIpanel extends JPanel {
 	}
 
 	private void highlightOne(String e) {
-		if (!e.matches("[0-9]\\_[0-9]"))
+		if (!e.matches("[0-9]+\\_[0-9]+"))
 			throw new IllegalArgumentException("Check syntax");
 
-		int i = e.charAt(0) - 48;
-		int j = e.charAt(2) - 48;
+		String[] pts=e.split("_");
+		int i=Integer.parseInt(pts[0]);
+		int j=Integer.parseInt(pts[1]);
 		if (gridColor[i][j].equals(Color.RED))
 			gridColor[i][j] = (DARKGREEN);
 	}

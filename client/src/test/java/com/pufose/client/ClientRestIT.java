@@ -118,7 +118,7 @@ public class ClientRestIT {
 			{1,0,1,1,0},
 			{1,1,1,1,1}
 		};
-		GridFromServer expectedGrid=new GridFromServer(matrix,1);
+		GridFromServer expectedGrid=new GridFromServer(5,matrix);
 		GridFromServer rcv=client.retrieveGrid("1");
 		assertEquals(expectedGrid,rcv);
 		assertEquals(200,rsc.getLastResponse());

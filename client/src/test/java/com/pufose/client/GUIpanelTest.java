@@ -167,7 +167,7 @@ public class GUIpanelTest {
 	@Test
 	public void testGraphBuilderWhenGraphIsEmpty() {
 		int[][] matrix=createMatrix(0,0);
-		GridFromServer fixture=new GridFromServer(matrix,0);
+		GridFromServer fixture=new GridFromServer(0,matrix);
 		GraphBuilder.instance.makeGraph(fixture, pan);
 		allHiddenProcedure(0,0);
 	}
@@ -179,7 +179,7 @@ public class GUIpanelTest {
 	private void createGridOfDimensionOneAndAssertCoerentDrawing(int value_in_matrix ) {
 		int[][]matrix=createMatrix(1,1);
 		matrix[0][0]=value_in_matrix;
-		GridFromServer fixture=new GridFromServer(matrix,0);
+		GridFromServer fixture=new GridFromServer(1,matrix);
 		GraphBuilder.instance.makeGraph(fixture, pan);
 		
 	}
@@ -191,7 +191,7 @@ public class GUIpanelTest {
 	}
 	@Test
 	public void testGraphBuilderWhenNotSquareMatrixAndRowsGTCol() {
-		GraphBuilder.instance.makeGraph(new GridFromServer(createMatrix(3,1),0), pan);
+		GraphBuilder.instance.makeGraph(new GridFromServer(3,createMatrix(3,1)), pan);
 		for(int i=0; i<2;i++) {
 			for(int j=0; j<2;j++) {
 				assertColorInPoint(Color.BLACK,i,j);
@@ -217,7 +217,7 @@ public class GUIpanelTest {
 	}
 	@Test
 	public void testGraphBuilderWhenNotSquareMatrixAndColGTRows() {
-		GraphBuilder.instance.makeGraph(new GridFromServer(createMatrix(7,10),0), pan);
+		GraphBuilder.instance.makeGraph(new GridFromServer(7,createMatrix(7,10)), pan);
 		for(int i=0; i<7;i++) {
 			for(int j=0; j<7;j++) {
 				assertColorInPoint(Color.BLACK,i,j);
@@ -234,7 +234,7 @@ public class GUIpanelTest {
 			{1,1,1,1},
 			{1,1,0,1}
 		};
-		GridFromServer fixture=new GridFromServer(matrix,0);
+		GridFromServer fixture=new GridFromServer(4,matrix);
 		GraphBuilder.instance.makeGraph(fixture, pan);
 		for(int i=0; i<4;i++) {
 			for(int j=0; j<4;j++) {

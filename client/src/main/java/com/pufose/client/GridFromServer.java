@@ -5,23 +5,23 @@ import java.util.Arrays;
 public class GridFromServer {
 
 	private int[][] matrix;
-	private int id;
+	private int n;
 
-	public GridFromServer(int[][] matrix, int id) {
+	public GridFromServer(int n,int[][] matrix) {
 		this.matrix = matrix;
-		this.id=id;
+		this.n=n;
 	}
 
-	public GridFromServer(int id) {
+	public GridFromServer() {
 		this.matrix=new int[0][0];
-		this.id=id;
+		this.n=0;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + n;
 		result = prime * result + Arrays.deepHashCode(matrix);
 		return result;
 	}
@@ -35,7 +35,7 @@ public class GridFromServer {
 		if (getClass() != obj.getClass())
 			return false;
 		GridFromServer other = (GridFromServer) obj;
-		if (id != other.id)
+		if (n != other.n)
 			return false;
 		return (Arrays.deepEquals(matrix, other.matrix));
 			

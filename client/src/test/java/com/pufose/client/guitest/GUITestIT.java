@@ -181,8 +181,8 @@ public class GUITestIT  {
 		retrieveAllGrids(1);
 		window.comboBox("actionsCombo").selectItem(1);
 		window.comboBox("gridCombo").selectItem(0);
-		when(cl.retrieveGrid("0")).thenReturn(new GridFromServer(new int[][] 
-				{{1,0,0},{1,1,0},{1,1,1}},0));
+		when(cl.retrieveGrid("0")).thenReturn(new GridFromServer(3,new int[][] 
+				{{1,0,0},{1,1,0},{1,1,1}}));
 		window.button("btnPerform").click();
 		window.label("lblOutput").requireText(GUI.OPERATION_OK);
 		GUIpanel pan=getGuiPanel();
@@ -210,20 +210,20 @@ public class GUITestIT  {
 		verify(cl,times(1)).getAllTables();
 	}
 	
-	private GridFromServer createGridWithId(int id) {
+	private GridFromServer createGridWithN3() {
 		int[][] matrix=new int[][] {
 			{1,0,0},
 			{1,1,0},
 			{1,1,1},
 			
 		};
-		return new GridFromServer(matrix,id);
+		return new GridFromServer(3,matrix);
 	}
 	private void requestAGrid(int id) throws IOException {
 		retrieveAllGrids(id+1);
 		window.comboBox("actionsCombo").selectItem(1);
 		window.comboBox("gridCombo").selectItem(id);
-		when(cl.retrieveGrid("0")).thenReturn(createGridWithId(id));
+		when(cl.retrieveGrid("0")).thenReturn(createGridWithN3());
 		window.button("btnPerform").click();
 		
 	}

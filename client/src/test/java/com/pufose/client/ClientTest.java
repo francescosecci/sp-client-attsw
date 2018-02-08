@@ -77,7 +77,7 @@ public class ClientTest {
 			{1,0},
 			{0,1}
 		};
-		GridFromServer fixture=new GridFromServer(matrix,0);
+		GridFromServer fixture=new GridFromServer(2,matrix);
 		String json=new Gson().toJson(fixture);
 		Mockito.doReturn(json).when(service).doGet(REQUEST_GRID, "0");
 		GridFromServer rcv=client.retrieveGrid("0");

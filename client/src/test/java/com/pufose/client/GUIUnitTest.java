@@ -123,10 +123,10 @@ public class GUIUnitTest  {
 	
 	@Test
 	public void testRetrieveOneGridWhenOk() throws IOException {
-		when(cl.retrieveGrid("1")).thenReturn(new GridFromServer(1));
+		when(cl.retrieveGrid("1")).thenReturn(new GridFromServer());
 		GridFromServer retrieved=frame.caseRequestGrid("1");
 		verify(cl,times(1)).retrieveGrid("1");
-		assertEquals(new GridFromServer(1),retrieved);
+		assertEquals(new GridFromServer(),retrieved);
 		
 	}
 	private void throwWhenRetrieveGrid(Exception exc) throws IOException {
