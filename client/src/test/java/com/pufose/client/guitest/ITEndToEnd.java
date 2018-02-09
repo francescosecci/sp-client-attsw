@@ -14,11 +14,15 @@ import com.pufose.client.gui.GUI;
 public class ITEndToEnd  {
 	private FrameFixture window;
 	private GUI frame;
+	private String host="attsw-server.herokuapp.com";
+	private String port="80";
 	@Before
 	public void runGui() {
 		frame = GuiActionRunner.execute(()-> GUI.createGui(false));
 		window=new FrameFixture(frame.getFrame());
 		window.show();
+		window.textBox("serverField").setText(host);
+		window.textBox("portField").setText(port);
 	}
 	@After
 	public void tearDownGui() {
