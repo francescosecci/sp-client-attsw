@@ -355,4 +355,8 @@ public class GUI {
 		
 	}
 
+	public GUIpanel getGuiPanel() {
+		return panel;
+	}
+
 }
