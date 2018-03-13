@@ -42,7 +42,7 @@ public class GridFromServer {
 	}
 	
 	public int getN() {
-		return matrix.length;
+		return n;
 	}
 	
 	public boolean isEnabled(int i, int j) {
